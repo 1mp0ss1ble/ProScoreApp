@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
 
 
-app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(favicon(__dirname + '/server/public/favicon.ico'));
 
 app.use(webpackMiddleware(compiler,{
 	hot: true,
