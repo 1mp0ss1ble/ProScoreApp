@@ -1,8 +1,9 @@
 import React from 'react';
-import { Provider } from 'react-redux';
 import { render } from 'react-dom';
-import {Root} from './App/Start';
-import { App } from './App/App';
-import Navbar from './App/NavigationBar';
+import Root from './app/Root';
 
-render(<Root /> , document.getElementById('app'));
+
+render( 
+  	<Root />,
+   	 document.getElementById('app')
+);

@@ -21,12 +21,15 @@ export default {
 		loaders : [
 			{
 				test: /\.js$/,
-				exclude:path.resolve(__dirname, "node_modules"),
+				include: [
+					path.join(__dirname, 'client'),
+					path.join(__dirname, 'server/shared'),
+				],
 				loaders: ['react-hot','babel']	
 			}
 		]
 	},
 	resolve: {
-		extensions: ['','.js']
+		extensions: ['','.js','.jsx']
 	}
 }
