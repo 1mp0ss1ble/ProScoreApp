@@ -8,6 +8,7 @@ import controllers from './controllers';
 import mongoose from 'mongoose';
 let app = express();
 
+const port = process.env.PORT || 3000;
 
 let bodyParser = require('body-parser');
 
@@ -47,6 +48,6 @@ process.on('SIGINT', function() {
 });
 
 
-app.listen(3000, () => console.log('Server running on 3000'));
+app.listen(port, () => console.log('Server running on 3000'));
 
 
