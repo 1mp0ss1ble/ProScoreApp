@@ -18,12 +18,14 @@ var conn = mongoose.connection;
 var Schema = new mongoose.Schema({
     id : String,
     desc : String,
-    tournamentId : Array,
-    leaguId: String,
-    groupId: Array,  
+    tournamentId : String,
+    leagueId: String,
+    groupId: String,  
+    seasonId: String,  
     createdDate: Date,
-    createUserId: Number,
+    userId: Number,
     info: String,
+    isActive: Boolean,
 });
 
 let Model = mongoose.model('events',Schema);
@@ -62,14 +64,28 @@ exports.add = (req, res) => {
   }
 
   
-  Model.find((err, founded) => {
+  Model.find((err, items) => {
     if(err){
       errors.database = JSON.stringify(err);
       return res.status(400).json(errors);
     }else{
-      const duplicate = founded.find( t => 
-        isStringsAreEqual(t.desc,model.desc));
-      console.log(duplicate);
+
+     let filtered = items.filter(t => 
+       t.tournamentId === model.tournamentId);
+
+     filtered = model.leagueId ? 
+       filtered.filter(t => t.leagueId === model.leagueId) : filtered;
+
+     filtered = model.groupId ? 
+       filtered.filter(t => t.groupId === model.groupId) : filtered;
+     
+     const duplicate = filtered.find(t => 
+       isStringsAreEqual(t.desc,model.desc));
+
+      
+      console.log('duplicate', duplicate);
+    
+
       if(duplicate){
         errors.desc = "duplicate season";
         return res.status(400).json(errors);
@@ -141,14 +157,14 @@ exports.update = function(req, res){
 
 
 
-  Model.find((err, teams) => {
+  Model.find((err, items) => {
       
       if(err){
         errors.database = JSON.stringify(err);
         return res.status(400).json(errors);
       }
 
-      const duplicates = teams
+      const duplicates = items
                             .filter(t => 
                                 t._id.toString() !== 
                                 model._id.toString())

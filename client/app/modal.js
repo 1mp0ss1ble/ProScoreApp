@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import TeamModal  from '../teams/teamModal';
 import TournamentModal  from '../tournaments/tournamentModal';
+import MatchForm  from '../matches/MatchForm';
+import EventForm  from '../events/EventForm';
 import {types} from './constants';
 
 const Modal = ({state,dispatch}) => {
@@ -19,6 +21,16 @@ const Modal = ({state,dispatch}) => {
 							 tournament = {state.content} 
 							 dispatch={dispatch}  
 							 closeModalAction={closeModalAction} />;
+			case types.match:
+				return <MatchForm
+							 match = {state.content} 
+							 dispatch={dispatch}  
+							 closeModalAction={closeModalAction} />;
+			case types.event:
+				return <EventForm
+							 event = {state.content} 
+							 dispatch={dispatch}  
+							 closeModalAction={closeModalAction} />; 
 			default:
 				return <div>default</div>;
 		}
@@ -45,7 +57,7 @@ const Modal = ({state,dispatch}) => {
 
 
 
-const close = () => (dispatch) => dispatch({type:'CLOSE_MODAL'})
+const close = () => (dispatch) => dispatch(closeModalAction);
 
 const closeModalAction = {type:'CLOSE_MODAL'};
 

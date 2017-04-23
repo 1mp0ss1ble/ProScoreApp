@@ -1,61 +1,25 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 import shortid from 'shortid';
 //import api from '../api'
 import api from '../api/db';
 import {types} from '../app/constants';
 import util from '../util';
-import validateInput from '../../server/shared/validations/addTeam';
-import {ModalInputWrapper, ModalInput} from './teamModalInput';
+import validateInput from '../../server/shared/validations/checkMatch';
+//import {ModalInputWrapper, ModalInput} from './teamModalInput';
 
-class TeamModal extends React.Component {
+class MatchModal extends React.Component {
 	constructor(props){
 		super(props);
-		this.state = {
-			...util.getEnumrabelObjProps(this.props.team),
-			errors:{},
-			isLoading: false,
-		};
+		this.state = { errors: {} };
 
-		
-		this.removeItem = this.removeItem.bind(this);
-		//this.closeItem = this.closeItem.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
 		this.onChange = this.onChange.bind(this);
-		this.showInputs = this.showInputs.bind(this);
-		this.isValid = this.isValid.bind(this);
-
-		//push inputs	
-		const {errors} = this.state;
-		const getId = ()=> shortid.generate();
-
-		this.inputs = [
-			{ shortid:getId(),prop:'desc',title:'Desc',isRequired:true},
-			{ shortid:getId(),prop:'sponsor',title:'Sponsor'},
-			{ shortid:getId(),prop:'captain',title:'Captain'},
-			{ shortid:getId(),prop:'rating',title:'Rating', type:'number'},
-
-		]
 	}
 
 	
-	showInputs(){
-		return this.inputs.map( t => (
-			<ModalInputWrapper 
-			 			key={t.shortid}
-				    	title={t.title} 
-				    	spanId={'basic-addon1'} 
-				    	error={this.state.errors[t.prop]}  
-		    >
-		    	<ModalInput 
-			    	val={this.state[t.prop]} 
-			    	name={t.prop}
-			    	type={t.type}
-			    	onChange={this.onChange} 
-			    	required={t.isRequired}  />
-		    </ModalInputWrapper>
-		));
-	}
+	
+
 	
  	removeItem(){
 		const {dispatch} = this.props;
@@ -102,6 +66,7 @@ class TeamModal extends React.Component {
 	}
 
 
+
 	onChange(e){
 		this.setState({[e.target.name]:e.target.value});
 		//console.log(e.target.name,e.target.value,this.state);
@@ -113,12 +78,15 @@ class TeamModal extends React.Component {
 
 		return (
 			<div> 
-				<h4>{`TEAM:  ${this.props.team.desc}`}</h4>
+				<h4>{`MatchId:  ${this.props.match._id}`}</h4>
 				{errors.database && <span className="help-block">{errors.database}</span>}
 				<form onSubmit={this.handleSubmit} >
-				   
-				{this.showInputs()}
-				   
+				
+				<select value={this.props.match.homeId} onChange={this.onChange}>
+				{this.props.teams.map(x => 
+					<option key={x._id} value={x._id}>{x.desc}</option>)}
+				</select>
+
 					<button 
 						className="btn btn-primary" 
 						disabled={this.state.isLoading} 
@@ -144,5 +112,5 @@ class TeamModal extends React.Component {
 }
 
 
-export default TeamModal;
+export default connect(state => ({teams:state.teams}))(MatchModal);
 

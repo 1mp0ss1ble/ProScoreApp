@@ -41,9 +41,9 @@ class TournamentModal extends React.Component {
  	removeItem(){
 		const {dispatch} = this.props;
 		let success = confirm('are you sure?');
-		this.setState({errors:{}, isLoading:true});
 		
 		if(success){
+			this.setState({errors:{}, isLoading:true});
 			dispatch(api.tournaments.remove({id:this.state._id}))
 			.then( () => {
 				dispatch(this.props.closeModalAction);

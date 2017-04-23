@@ -11,7 +11,7 @@ router.get('/get', (req, res) => {
 
 
 router.post('/add', (req,res) => {
-    db.add(req.body, err => res.json({err}));
+    db.add(req, res);
 });
 
 router.post('/update', (req,res) => {

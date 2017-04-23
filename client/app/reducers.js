@@ -71,6 +71,11 @@ const loadersReducer = (state={}, action) => {
 		case 'FETCH_EVENTS_SUCCESS':
 			return {...state, isFetchingEvents:false};
 
+		case 'FETCH_TOURNAMENTS_REQUEST':	
+			return {...state, isFetchingTournaments:true};
+		case 'FETCH_TOURNAMENTS_SUCCESS':
+			return {...state, isFetchingTournaments:false};	
+
 		default:
 		    return state;
 	}
@@ -82,9 +87,9 @@ const modalReducer = (state={}, action) => {
 			return {};
 		case 'OPEN_MODAL':
 			return {
-					isOpened:true,
-					modalType:action.modalType,
-				 	content:action.payload
+					isOpened: true,
+					modalType: action.modalType,
+				 	content: action.payload
 				    };
 		default:			
 			return state;	

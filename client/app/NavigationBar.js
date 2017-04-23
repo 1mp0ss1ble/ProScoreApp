@@ -1,9 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { LinkContainer } from 'react-router-bootstrap';
+import { Nav, Navbar, NavItem,NavDropdown, MenuItem} from 'react-Bootstrap/lib';
 
 
 export default () => {
 	return (
+		/*
 		<nav className="navbar navbar-default">
 			<div className="container-fluid">
 				<div className="navbar-header">
@@ -22,5 +25,26 @@ export default () => {
 				</div>
 			</div>
 		</nav>
+		*/
+
+	<Navbar collapseOnSelect>
+    <Navbar.Header>
+      <Navbar.Brand>
+        <a href="#">ProScore</a>
+      </Navbar.Brand>
+      <Navbar.Toggle />
+    </Navbar.Header>
+    <Navbar.Collapse>
+      <Nav pullRight>
+        <LinkContainer to={{pathname: '/admin'}}>
+    		<NavItem eventKey={1} href="#/Admin">Admin</NavItem>
+    	</LinkContainer>
+
+        <LinkContainer to={{pathname: '/signup'}}>
+    		<NavItem eventKey={1} href="#/Signup">Signup</NavItem>
+    	</LinkContainer>
+      </Nav>
+    </Navbar.Collapse>
+  </Navbar>
 	);
 }

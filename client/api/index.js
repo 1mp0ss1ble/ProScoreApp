@@ -8,27 +8,13 @@ import {types} from '../app/constants';
 
 
 
-const getActions = (type) => {
-	if(type === 'team') {
-		return teamActions;
-	} 
-	if(type === 'event') {
-		return eventActions;
-	} 
-
-	if(type === 'player') {
-		return playerActions;
-	}
-
-	if(type === 'match') {
-		return matchActions;
-	}
-
-	if(type === 'tournament') {
-		return tournamentActions;
-	}
-
-}
+const getActions = {
+		teamActions,
+	    eventActions,
+		playerActions,
+	    tournamentActions,
+		matchActions,
+};
 
 
 const constructRoute = (action) => (type) => 
@@ -42,16 +28,13 @@ const api = {
 
 		const route = constructRoute('get')(type);
 
-		const actions  = getActions(type);
-
-		const {fetchRequest, fetchSuccess} = actions;
+		const {fetchRequest, fetchSuccess} = getActions[`${type}Actions`];
 
 		dispatch(fetchRequest());
 		
 		return axios.get(route).then(response =>
 				dispatch(fetchSuccess(response.data.models))
 		)},	
-
 
 	addItem: (type) => (data) => (dispatch) => {
 		const route = constructRoute('add')(type);

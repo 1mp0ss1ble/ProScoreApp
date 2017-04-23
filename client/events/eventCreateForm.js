@@ -36,7 +36,7 @@ class CreateForm extends React.Component {
 			desc:this.refs.desc.value,
 			tournamentId: this.state.tournamentId,
 			leagueId: this.state.leagueId,
-			groupId: this.state.leagueId,
+			groupId: this.state.groupId,
 			isActive: this.refs.isActive.checked,
 			info: this.refs.info.value,
 		};
@@ -44,12 +44,10 @@ class CreateForm extends React.Component {
 	isValid(){
      	
      	const obj = this.getInputData();
-		console.log(obj);
-     	const {errors, isValid} = validateInput(obj);
+	 	const {errors, isValid} = validateInput(obj);
 
      	if(!isValid){
      		this.setState({errors, isLoading:false});
-     		console.log('erros',errors);
      	}
      	return isValid;
     }
@@ -77,12 +75,9 @@ class CreateForm extends React.Component {
 		if(this.isValid()){
 				const obj = this.getInputData();
 				this.setState({errors:{},isLoading:true});
-				//console.log('passed',obj);
-				//return;
 		
 			dispatch(api.events.add(obj))
 			.then( (response) => {
-				console.log('api get');
 				this.setState({isLoading:false});
 			    dispatch(api.events.get());
 			})
@@ -135,15 +130,18 @@ class CreateForm extends React.Component {
 	}
 
 	handleGroup(e){
+
 		const group = this.state.leagues
 			.find(v => v._id === this.state.leagueId).groups
 			.find(t => t._id === e.target.value);
-		
+
 		if(group && group._id){
 			this.setState({groupId: group._id});
 		} else{
 			this.setState({groupId: null});
 		}
+
+		console.log(this.state);
 	}
 
 	
@@ -193,8 +191,8 @@ class CreateForm extends React.Component {
 				<p></p>	
 				<div className={classnames("input-group",{'has-error':errors.desc})} >		
 					<select 
-					 defaultValue={currentYear} 
-					 ref="desc"
+					 	ref="desc" 
+					 	defaultValue={currentYear}
 					 >	
 						{generateSeasons(currentYear)}
 					</select> 

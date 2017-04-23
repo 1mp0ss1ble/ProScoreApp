@@ -10,7 +10,7 @@ import CreateForm from './teamCreateForm';
 
 class TeamsContainer extends React.Component {
 	componentDidMount(){
-		  this.props.dispatch(api.teams.get());
+		 // this.props.dispatch(api.teams.get());
 	}
 
 	render(){

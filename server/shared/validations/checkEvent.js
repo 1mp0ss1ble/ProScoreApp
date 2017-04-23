@@ -5,9 +5,11 @@ import Validator from 'validator';
 export default function validateInput(data){
   let errors = {};
   
+  /*
   if(Validator.isEmpty(data.desc.trim())){
     errors.desc = "This field is required";
   }
+  */
   
   if(!(data.isActive === true || data.isActive === false)){
     errors.isActive = "This field can be true or false";
@@ -15,17 +17,17 @@ export default function validateInput(data){
   
   if( !data.tournamentId 
       || !Validator.isMongoId(data.tournamentId.toString())){
-    errors.tournament = "This field is required or has wrong type";
+    errors.tournamentId = "This field is required or has wrong type";
   }
 
   
  if(data.leagueId && !Validator.isMongoId(data.leagueId.toString())){
-    errors.league = "This field is has wrond type";
+    errors.leagueId = "This field is has wrond type";
   }
 
   if( data.groupId && 
      !Validator.isMongoId(data.groupId.toString())){
-    errors.group = "This field is has wrond type";
+    errors.groupId = "This field is has wrond type";
   }
 
 
@@ -34,7 +36,7 @@ export default function validateInput(data){
   }
 
   if(data.hasOwnProperty("_id")){
-    if(data._id || !Validator.isMongoId(data._id.toString())){
+    if(data._id && !Validator.isMongoId(data._id.toString())){
       errors._id = "this field is missing or has wrong type";
     }
   }

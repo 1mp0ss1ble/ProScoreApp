@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Match from './match';
 
 function getTeamDesc(teams){
 	return function(id){
@@ -8,14 +8,28 @@ function getTeamDesc(teams){
 	}
 }
 
-const Matches = ({matches, teams}) => {
+
+const Matches = ({matches, teams, tournaments, events, onClickMatch}) => {
 	let getDesc = getTeamDesc(teams);
 
 	return (
 		<div>
-		{matches.slice().reverse().map(t => 
-			<p key={t._id}>{`${getDesc(t.homeId)} vs ${getDesc(t.guestId)}`}</p>
-		)}
+			<ol>
+				{matches.slice().reverse().map(t => {
+					const event = events.find(x => x._id === t.eventId);
+
+					return (
+						<li key={t._id}>
+							<Match 
+								match={t} 
+								teams={teams} 
+							    tournament={tournaments.find(x => 
+							    	x._id === event.tournamentId)}							
+								event={event}
+								onClick={onClickMatch} />
+						</li>
+				)})}
+			</ol>
 		</div>
 	);
 };

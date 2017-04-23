@@ -9,19 +9,53 @@ import CreateForm from './matchCreateForm';
 
 
 class MatchesContainer extends React.Component {
+	constructor(props){
+		super(props);
+		this.onClickMatch = this.onClickMatch.bind(this);
+		this.onClickAdd = this.onClickAdd.bind(this);
+	}
 	componentDidMount(){
-		  this.props.dispatch(api.teams.get());
-		  this.props.dispatch(api.tournaments.get());
-		  this.props.dispatch(api.matches.get());
+		 // this.props.dispatch(api.teams.get());
+		//  this.props.dispatch(api.tournaments.get());
+		//  this.props.dispatch(api.matches.get());
+	}
+
+	onClickMatch(match){
+		this.props.dispatch({
+			type: 'OPEN_MODAL',
+			modalType: 'match', 
+			payload: match,
+		});
+	}
+
+	onClickAdd(){
+		this.props.dispatch({
+			type: 'OPEN_MODAL',
+			modalType: 'match', 
+			payload: null,
+		});
 	}
 
 	render(){
 		const {matches, ...rest} = this.props;
+
+		if(this.props.loaders.isFetchingEvents 
+			|| this.props.loaders.isFetchingTeams
+			|| this.props.loaders.isFetchingTournaments) {
+			return <span>loading...</span>;
+		}
+
 		return (
 				<div>
-					<CreateForm />
-					<h4>Matches({matches.length})</h4>
-					<Matches {...this.props} />
+					<p>
+					{this.props.editMode && 
+						<button 
+							className="btn btn-primary" 
+							onClick={this.onClickAdd}>
+								Add...
+						</button>}
+					</p>
+					<Matches {...this.props} onClickMatch={this.onClickMatch} />
 				</div>
 			);
 	}
@@ -31,8 +65,10 @@ class MatchesContainer extends React.Component {
 export default connect(
 	state => ({
 		matches:    state.matches,
+		tournaments: state.tournaments,
 		teams:      state.teams,
-		isFetching: state.loaders.isFetchingMatches,
+		events: state.events,
+		loaders: state.loaders,
 	}), 
 	//{
 		//fetchTeamsSuccess,

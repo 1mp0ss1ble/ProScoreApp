@@ -1,5 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
 import Validator from 'validator';
+import validateInput from '../shared/validations/checkMatch';
 
 var 
    mongoose = require('mongoose')
@@ -16,12 +17,19 @@ mongoose.connect(mongodbUri, options);
 var conn = mongoose.connection; 
 
 var Schema = new mongoose.Schema({
-    id : String,
-    homeId : String,
-    guestId : String,
-    result: String,
-    event : String,  
-    date: Date,
+    id: String,
+    homeId: String,
+    guestId: String,
+    result: {
+      home: String,
+      guest: String,
+    },
+    eventId: String,
+    location: String,  
+    date: String,
+    userId: String,
+    videoLink: String,
+    createdDate: Date,
 });
 
 let Model = mongoose.model('matches',Schema);
@@ -41,15 +49,27 @@ exports.get = (desc, res) =>
 
 
 
-exports.add = (data, cb) => {
-  /*
-  if(data.guestId.trim().length < 1) {
-    return cb('no description!');
-  }
-  */
-  let model = new Model(data);
+exports.add = (req, res) => {
+  
+
+  let model = new Model(req.body);
   model.id = model._id;
-  model.save(cb)
+
+ let { errors, isValid } = validateInput(model);
+
+ if(!isValid){
+    return res.status(400).json(errors);
+ }
+
+
+  model.save((err, data)=>{
+    if(err){
+      errors.database = err;
+      return res.status(500).json({errors});
+    } else {
+      return res.json(data);
+    }
+  })
 }
 
 
@@ -57,82 +77,25 @@ exports.remove = (id, cb) =>
   Model.remove({"_id": mongoose.Types.ObjectId(id)}, cb);    
 
 
-function validateInput(data){
-  let errors = {};
-
-  if(Validator.isEmpty(data.desc.trim())){
-    errors.desc = "This field is required";
-  }
-
-  
-  if(data.rating && !Validator.isNumeric(data.rating)){
-    errors.rating = "This field is for number only";
-  }
-
-  if(!data._id || !Validator.isMongoId(data._id.toString())){
-    errors._id = "this field is missing or has wrong type";
-  }
-
-  return {
-    errors,
-    isValid: isEmpty(errors),
-  }
-}
 
 exports.update = function(req, res){
     
   let model = req.body;
- 
- 
-  const { errors, isValid } = validateInput(model);
+  let { errors, isValid } = validateInput(model);
 
-  console.log('errors',errors);
 
   if(!isValid){
-    return res.status(400).json(errors);
+      return res.status(400).json(errors);
   }
 
-  /*
-  if(model.desc.trim().length < 1){
-     res.status(400).json('Description is empty!');
-  }
+  Model.update({_id: model._id}, model, (err, obj) => {
+    if(err){
+      errors.database = JSON.stringify(err);
+      return res.status(500).json(errors);
+    } else{
+      return res.json(obj);
+    }
 
-  if(isNaN(model.rating)){
-      res.status(400).('Rating must be number!');
-  }
-  */
-
-
-
-  Model.find((err, teams) => {
-      
-      if(err){
-        errors.database = JSON.stringify(err);
-        return res.status(400).json(errors);
-      }
-
-      const duplicates = teams
-                            .filter(t => 
-                                t._id.toString() !== 
-                                model._id.toString())
-                            .filter(t => 
-                                t.desc.toLowerCase() === 
-                                model.desc.toLowerCase());
-
-      if(duplicates.length > 0){
-        errors.desc = 'duplicate description!';
-        return res.status(400).json(errors);
-      } else {
-        Model.update({_id: model._id},model, (err, obj) => {
-          if(err){
-            errors.database = JSON.stringify(err);
-            return res.status(400).json(errors);
-          } else{
-             return res.json(obj); 
-          }
-        });
-      }
-    
   });
 }
 

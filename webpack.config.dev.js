@@ -26,7 +26,11 @@ export default {
 					path.join(__dirname, 'server/shared'),
 				],
 				loaders: ['react-hot','babel']	
-			}
+			},
+			{
+		        test: /\.css$/, // Only .css files
+		        loader: 'style!css' // Run both loaders
+	      	}
 		]
 	},
 	resolve: {

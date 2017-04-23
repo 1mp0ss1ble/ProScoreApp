@@ -13,7 +13,7 @@ import CreateForm from './tournamentCreateForm';
 class TournamentsContainer extends React.Component {
 	componentDidMount(){
 		//  this.props.dispatch(api.getItems('team'));
-		  this.props.dispatch(api.tournaments.get());
+		//  this.props.dispatch(api.tournaments.get());
 	}
 
 	render(){
