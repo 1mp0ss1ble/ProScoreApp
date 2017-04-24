@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
-//import { LinkContainer } from 'react-router-bootstrap';
-//import { Nav, Navbar, NavItem,NavDropdown, MenuItem} from 'react-Bootstrap/lib';
+import { LinkContainer } from 'react-router-bootstrap';
+import { Nav, Navbar, NavItem,NavDropdown, MenuItem} from 'react-Bootstrap/src';
 
 
 export default () => {
