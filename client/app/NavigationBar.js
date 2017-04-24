@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { LinkContainer } from 'react-router-bootstrap';
-import { Nav, Navbar, NavItem,NavDropdown, MenuItem} from 'react-Bootstrap/lib';
+//import { LinkContainer } from 'react-router-bootstrap';
+//import { Nav, Navbar, NavItem,NavDropdown, MenuItem} from 'react-Bootstrap/lib';
 
 
 export default () => {
 	return (
-		/*
+		
 		<nav className="navbar navbar-default">
 			<div className="container-fluid">
 				<div className="navbar-header">
@@ -25,8 +25,8 @@ export default () => {
 				</div>
 			</div>
 		</nav>
-		*/
-
+		
+/*
 	<Navbar collapseOnSelect>
     <Navbar.Header>
       <Navbar.Brand>
@@ -46,5 +46,6 @@ export default () => {
       </Nav>
     </Navbar.Collapse>
   </Navbar>
+  */
 	);
 }
