@@ -19,7 +19,11 @@ module.exports = {
             path.join(__dirname, 'server/shared'),
           ],
           loaders: ['babel']	
-        }
+        },
+        {
+	      test: /\.css$/, // Only .css files
+		  loader: 'style!css' // Run both loaders
+	    }
       ]
     },
   
