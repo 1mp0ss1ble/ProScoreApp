@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import TeamModal  from '../teams/teamModal';
 import TournamentModal  from '../tournaments/tournamentModal';
-import MatchForm  from '../matches/MatchForm';
-import EventForm  from '../events/EventForm';
+import MatchForm  from '../matches/matchForm';
+import EventForm  from '../events/eventForm';
 import {types} from './constants';
 
 const Modal = ({state,dispatch}) => {
