@@ -17,7 +17,7 @@ const Root = () => (
 <Provider store={configureStore()}>
 	<Router history={hashHistory}>
 	     <Route component={App}>
-			  <IndexRoute component={HomePage} />
+			  <Route path="/" component={HomePage} />
 			  <Route path="/signup" component={SignupPage} />
 			  <Route path="admin(/:type)" component={AdminPage} />	      
 	    </Route>
