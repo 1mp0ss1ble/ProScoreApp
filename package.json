@@ -6,7 +6,7 @@
   "scripts": {
     "start": "babel-node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "webpack --config webpack.config.prod.js -p"
+    "postinstall": "[ \"$NODE_ENV\" == production ] && webpack --config webpack.config.prod.js -p"
   },
   "keywords": [],
   "author": "",
