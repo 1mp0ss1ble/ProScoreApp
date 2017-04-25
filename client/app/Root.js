@@ -16,10 +16,10 @@ const Signup = () => <div>Signup</div>;
 const Root = () => (
 <Provider store={configureStore()}>
 	<Router history={hashHistory}>
-	  	<Route path="/" component={App}>
-	      <IndexRoute component={HomePage} />
-	      <Route path="/signup" component={SignupPage} />
-	      <Route path="admin(/:type)" component={AdminPage} />	      
+	     <Route component={App}>
+			  <IndexRoute component={HomePage} />
+			  <Route path="/signup" component={SignupPage} />
+			  <Route path="admin(/:type)" component={AdminPage} />	      
 	    </Route>
   </Router>
 </Provider>
