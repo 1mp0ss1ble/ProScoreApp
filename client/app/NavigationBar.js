@@ -36,14 +36,14 @@ export default () => {
     </Navbar.Header>
     <Navbar.Collapse>
       <Nav pullRight>
-		/*
+		
         <LinkContainer to={{pathname: '/admin'}}>
     		<NavItem eventKey={1} href="#/Admin">Admin</NavItem>
     	</LinkContainer>
 
         <LinkContainer to={{pathname: '/signup'}}>
     		<NavItem eventKey={1} href="#/Signup">Signup</NavItem>
-    	</LinkContainer>*/
+    	</LinkContainer>
       </Nav>
     </Navbar.Collapse>
   </Navbar>
