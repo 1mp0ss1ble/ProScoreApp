@@ -7,7 +7,7 @@ import { Nav, Navbar, NavItem,NavDropdown, MenuItem} from 'react-bootstrap/lib';
 export default () => {
 	return (
 		
-		<nav className="navbar navbar-default">
+	/*	<nav className="navbar navbar-default">
 			<div className="container-fluid">
 				<div className="navbar-header">
 					<Link to="/" className="navbar-brand">Match</Link>
@@ -25,8 +25,8 @@ export default () => {
 				</div>
 			</div>
 		</nav>
-		
-/*
+	 */	
+
 	<Navbar collapseOnSelect>
     <Navbar.Header>
       <Navbar.Brand>
@@ -46,6 +46,6 @@ export default () => {
       </Nav>
     </Navbar.Collapse>
   </Navbar>
-  */
+ 
 	);
 }
