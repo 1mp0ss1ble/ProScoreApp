@@ -7,14 +7,14 @@ import { Nav, Navbar, NavItem,NavDropdown, MenuItem} from 'react-bootstrap/lib';
 class NavigationBar extends React.Component{
 	render(){
 		return (
-			/*	<nav className="navbar navbar-default">
+				<nav className="navbar navbar-default">
 					<div className="container-fluid">
 						<div className="navbar-header">
 							<Link to="/" className="navbar-brand">Match</Link>
 						</div>
 
 						<div className="collapse navbar-collapse">
-							<ul className="nav navbar-nav navbar-right">
+							<ul className="nav navbar-nav navbar-left">
 								<li>
 									<Link to="/Admin">Admin</Link>							
 								</li>
@@ -25,7 +25,7 @@ class NavigationBar extends React.Component{
 						</div>
 					</div>
 				</nav>
-			 */	
+			 /*	
 
 			<Navbar collapseOnSelect>
 			<Navbar.Header>
@@ -45,7 +45,7 @@ class NavigationBar extends React.Component{
 				</LinkContainer> 
 			  </Nav>
 			</Navbar.Collapse>
-		  </Navbar>
+		  </Navbar> */
 		);
    }
 }
