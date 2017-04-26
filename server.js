@@ -37,7 +37,7 @@ app.use(express.static(__dirname + '/public'))
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
-/*
+
 if (process.env.NODE_ENV !== 'production') {
 const compiler  = webpack(webpackConfig);
 app.use(webpackMiddleware(compiler,{	
@@ -46,7 +46,7 @@ app.use(webpackMiddleware(compiler,{
 }));
 //app.use(webpackHotMiddleware(compiler));
 }
-*/
+
 
 app.use(controllers);
 
