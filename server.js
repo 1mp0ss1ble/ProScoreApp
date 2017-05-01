@@ -1,9 +1,6 @@
 import express from 'express';
 import path from 'path';
-//import webpack from 'webpack';
-//import webpackMiddleware from 'webpack-dev-middleware';
-//import webpackHotMiddleware from 'webpack-hot-middleware';
-//import webpackConfig from '../webpack.config.dev';
+import webpackConfig from './webpack.config.dev';
 import controllers from './server/controllers';
 import mongoose from 'mongoose';
 let app = express();
@@ -28,7 +25,7 @@ app.use(express.static(__dirname + '/public'))
 
 //app.use('/public', publicPath);
 
-    
+
 //app.use(express.static(__dirname + '/server/public'));
 //app.use(express.static(path.join(__dirname, 'dist')));
 
@@ -39,12 +36,16 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 
 if (process.env.NODE_ENV !== 'production') {
-const compiler  = webpack(webpackConfig);
-app.use(webpackMiddleware(compiler,{	
-	publicPath: webpackConfig.output.publicPath,
-	noInfo: true
-}));
-//app.use(webpackHotMiddleware(compiler));
+  const webpack = require('webpack');
+  const webpackMiddleware = require('webpack-dev-middleware');
+  const webpackHotMiddleware = require('webpack-hot-middleware');
+  const compiler  = webpack(webpackConfig);
+
+  app.use(webpackMiddleware(compiler,{
+  	publicPath: webpackConfig.output.publicPath,
+  	noInfo: true
+  }));
+  app.use(webpackHotMiddleware(compiler));
 }
 
 

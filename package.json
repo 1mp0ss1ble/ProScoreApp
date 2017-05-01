@@ -1,10 +1,11 @@
 {
-    "name": "reduxApp",
+  "name": "proscoreApp",
   "version": "1.0.0",
   "description": "track tournaments, matches and teams",
   "main": "server.js",
   "scripts": {
     "start": "babel-node server.js",
+    "server": "nodemon --watch server --exec  babel-node -- server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "test \"$NODE_ENV\" = \"production\"; then webpack --config webpack.config.prod.js -p;fi"
   },

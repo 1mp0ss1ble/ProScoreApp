@@ -8,8 +8,8 @@ import generateSeasons from './seasonSelection';
 import validateInput from '../../server/shared/validations/checkEvent';
 
 /*
-	<select 
-		onChange={this.handleTournament} 
+	<select
+		onChange={this.handleTournament}
 		name="tournament"
 	>
 		<option value="">select tournament...</option>
@@ -31,14 +31,14 @@ function ErrorWrapper({children,error}){
 
 function FormSelect({desc, handleChange, value={}, models}){
 	return (
-		<select 
-			name={desc} 
-			value={value} 
-			onChange={handleChange} 
+		<select
+			name={desc}
+			value={value}
+			onChange={handleChange}
 			className="form-group"
 		>
 			<option  value="">{`select ${desc.slice(0,-2)}...`}</option>
-			{models.map(t => 
+			{models.map(t =>
 				<option key={t._id} value={t._id}>{t.detailedDesc || t.desc}</option>
 			)}
 		</select>
@@ -55,20 +55,20 @@ class CreateForm extends React.Component {
 		this.isUpdating = !!this.props.event;
 
 		if(this.isUpdating){
-		
+
 		const {event, tournaments} = this.props;
-		const tournament = tournaments.find(x => 
+		const tournament = tournaments.find(x =>
 			x._id === event.tournamentId);
 		const leagues = tournament.leagues;
-		
 
-		const groups = event.leagueId ? leagues.find(x => 
-			x._id === event.leagueId).groups : [];  
+
+		const groups = event.leagueId ? leagues.find(x =>
+			x._id === event.leagueId).groups : [];
 
 			this.state = {
 				...this.props.event,
-				leagues:leagues, 
-				groups: groups, 
+				leagues:leagues,
+				groups: groups,
 				errors:{}
 			};
 		} else {
@@ -83,7 +83,7 @@ class CreateForm extends React.Component {
 					errors: {},
 			};
 		}
-		
+
 		this.handleTournament = this.handleTournament.bind(this);
 		this.handleLeague = this.handleLeague.bind(this);
 		this.handleGroup = this.handleGroup.bind(this);
@@ -107,7 +107,7 @@ class CreateForm extends React.Component {
 		};
 	}
 	isValid(){
-     	
+
      	const obj = this.getInputData();
 	 	const {errors, isValid} = validateInput(obj);
 
@@ -121,7 +121,7 @@ class CreateForm extends React.Component {
     removeItem(){
 		const {dispatch} = this.props;
 		let success = confirm('are you sure?');
-		
+
 
 		if(success){
 			this.setState({errors:{}, isLoading:true});
@@ -129,7 +129,7 @@ class CreateForm extends React.Component {
 			.then( () => {
 				dispatch(this.props.closeModalAction);
 				dispatch(api.events.get());
-			}).catch( err => 
+			}).catch( err =>
 				this.setState({errors: err.response.data,isLoading:false})
 			);
 		}
@@ -137,7 +137,7 @@ class CreateForm extends React.Component {
 
 	handleSubmit(e){
 		e.preventDefault();
-		
+
 		const { dispatch } = this.props;
 
 		//console.log(this.getInputData());
@@ -147,8 +147,8 @@ class CreateForm extends React.Component {
 				const obj = this.getInputData();
 
 				this.setState({errors:{},isLoading:true});
-		
-		const requiredAction = this.isUpdating ? 
+
+		const requiredAction = this.isUpdating ?
 			api.events.update : api.events.add;
 
 
@@ -157,22 +157,22 @@ class CreateForm extends React.Component {
 				this.setState({isLoading:false});
 				dispatch(api.events.get());
 				dispatch(this.props.closeModalAction);
-			    
+
 			})
-			.catch(err => 
+			.catch(err =>
 				this.setState({errors: err.response.data, isLoading:false})
 			);
 		}
 	}
 
 	handleTournament(e){
-		
+
 		const tournament = this.props.tournaments
 							.find(t=> t._id === e.target.value);
 
 
 		if(tournament && tournament.leagues){
-			
+
 			this.setState({
 				tournamentId: e.target.value,
 				leagues: tournament.leagues,
@@ -225,7 +225,7 @@ class CreateForm extends React.Component {
 
 	handleInput(e){
 		let val = e.target.value;
-		
+
 		if(e.target.type === 'checkbox'){
 			val = !this.state.isActive;
 		}
@@ -246,76 +246,76 @@ class CreateForm extends React.Component {
 		<form onSubmit={this.handleSubmit.bind(this)}>
 			<div className="form-inline">
 				<div>
-					{this.props.isLoadingTournaments ? 
+					{this.props.isLoadingTournaments ?
 						<span>Loading...</span> :
 						(
 							<div>
 
 							    <ErrorWrapper error={errors.tournamentId}>
-							    	<FormSelect 
-							    		desc="tournamentId" 
+							    	<FormSelect
+							    		desc="tournamentId"
 							    		value={this.state.tournamentId || ""}
-							    		handleChange={this.handleTournament} 
-							    		models={this.props.tournaments} 
+							    		handleChange={this.handleTournament}
+							    		models={this.props.tournaments}
 							    	/>
 								</ErrorWrapper>
 
 								<p></p>
-								{this.state.tournamentId &&  
-									<FormSelect 
-							    		desc="leagueId" 
+								{this.state.tournamentId &&
+									<FormSelect
+							    		desc="leagueId"
 							    		value={this.state.leagueId || ""}
-							    		handleChange={this.handleLeague} 
-							    		models={this.state.leagues} 
+							    		handleChange={this.handleLeague}
+							    		models={this.state.leagues}
 							    	/>
 								}
-								<p></p>	
-								{this.state.leagueId &&  
-									<FormSelect 
-							    		desc="groupId" 
+								<p></p>
+								{this.state.leagueId &&
+									<FormSelect
+							    		desc="groupId"
 							    		value={this.state.groupId || ""}
-							    		handleChange={this.handleGroup} 
-							    		models={this.state.groups} 
+							    		handleChange={this.handleGroup}
+							    		models={this.state.groups}
 							    	/>
 								}
 							</div>
 						)
 					}
-					
+
 					<p></p>
 
-					is Active? 
-					<input 
+					is Active?
+					<input
 						checked={this.state.isActive}
 						onChange={this.handleInput}
-						className="form-control" 
+						className="form-control"
 						name="isActive"
 						type="checkbox"  
 					/>
 				</div>
 				 <ErrorWrapper error={errors.desc}>
 				<input
-					name="desc" 
+					name="desc"
 					value={this.state.desc}
 					className="form-control"
-					onChange={this.handleInput} 
+					onChange={this.handleInput}
 					placeholder='description'
 				/>
 				</ErrorWrapper>
 				<p></p>
-				<button 
+				<button
 					type='submit'
-					disabled={this.state.isLoading} 
-					className="btn btn-primary" 
+					disabled={this.state.isLoading}
+					className="btn btn-primary"
 				>
 					{this.isUpdating ? 'Update' : 'Create'}
 				</button>
 
 				{this.isUpdating && (
-						<button 
+						<button
 						onClick={this.removeItem}
-						disabled={this.state.isLoading} 
-						className="btn btn-default" 
+						disabled={this.state.isLoading}
+						className="btn btn-default"
 						>
 							Remove
 						</button>

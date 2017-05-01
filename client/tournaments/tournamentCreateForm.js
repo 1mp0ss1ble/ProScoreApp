@@ -20,7 +20,7 @@ class CreateForm extends React.Component {
 		e.preventDefault();
 		const { dispatch } = this.props;
 
-		
+
 		let obj = {
 			desc: this.refs.desc.value
 		}
@@ -45,9 +45,11 @@ class CreateForm extends React.Component {
 
 				<div className={classnames("form-inline",{'has-error': !isEmpty(this.state.errors)})}>
 				<input className="form-control" required ref="desc" placeholder='tournament name' />
-				<input type='submit' disabled={this.state.isLoading} className="btn btn-primary" value='create' />
+				<button type='submit' disabled={this.state.isLoading} className="btn btn-primary" >
+					create
+				</button>
 				{this.state.errors.desc && <span className="help-block">{this.state.errors.desc}</span>}
-				
+
 				</div>
 			</form>
 		);

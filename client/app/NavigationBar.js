@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { LinkContainer } from 'react-router-bootstrap';
-import { Nav, Navbar, NavItem,NavDropdown, MenuItem} from 'react-bootstrap/lib';
+//import { LinkContainer } from 'react-router-bootstrap';
+//import { Nav, Navbar, NavItem,NavDropdown, MenuItem} from 'react-bootstrap/lib';
 
 
 class NavigationBar extends React.Component{
@@ -13,10 +13,10 @@ class NavigationBar extends React.Component{
 							<Link to="/" className="navbar-brand">Match</Link>
 						</div>
 
-						<div className="collapse navbar-collapse">
+						<div className="">
 							<ul className="nav navbar-nav navbar-left">
 								<li>
-									<Link to="/Admin">Admin</Link>							
+									<Link to="/Admin">Admin</Link>
 								</li>
 								<li>
 									<Link to="/Signup">Signup</Link>
@@ -25,7 +25,7 @@ class NavigationBar extends React.Component{
 						</div>
 					</div>
 				</nav>
-			 /*	
+			 /*
 
 			<Navbar collapseOnSelect>
 			<Navbar.Header>
@@ -42,7 +42,7 @@ class NavigationBar extends React.Component{
 
 				<LinkContainer to={{pathname: '/signup'}}>
 					<NavItem eventKey={1} href="#/Signup">Signup</NavItem>
-				</LinkContainer> 
+				</LinkContainer>
 			  </Nav>
 			</Navbar.Collapse>
 		  </Navbar> */

@@ -10,20 +10,20 @@ class CreateForm extends React.Component {
 		e.preventDefault();
 		const { state, dispatch } = this.props;
 
-		
+
 	    const desc = this.refs.desc.value.toString().trim();
 
 	    if(desc.length < 2 ){
 	    	return alert('too short!');
 	    }
-		const countDuplicates = state.filter(t => 
+		const countDuplicates = state.filter(t =>
 					t.desc.toString().trim().toLowerCase() === desc.toLowerCase()
 		);
-				
+
 		if(countDuplicates.length){
 			return alert('dupliacte');
-		}	
-		
+		}
+
 		dispatch(api.teams.add({desc}))
 		.then( res => {
 			util.showError(res.data.err);
@@ -37,7 +37,9 @@ class CreateForm extends React.Component {
 		<form onSubmit={this.handleSubmit.bind(this)}>
 			<div className="form-inline">
 			<input className="form-control" ref="desc" placeholder='team name' />
-			<input type='submit' className="btn btn-primary" value='create' />
+			<button type='submit' className="btn btn-primary" >
+				create
+			</button>
 			</div>
 		</form>
 		);

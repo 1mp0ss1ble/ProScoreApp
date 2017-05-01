@@ -4,7 +4,7 @@ import { Router, Route, IndexRoute, hashHistory }  from 'react-router';
 import App from './App';
 import configureStore from './configureStore';
 import HomePage from '../homePage';
-import AdminPage from '../adminPage';
+import AdminPage from '../pages/admin';
 import SignupPage from '../signupPage/signupPage';
 
 
@@ -19,7 +19,7 @@ const Root = () => (
 	     <Route component={App}>
 			  <Route path="/" component={HomePage} />
 			  <Route path="/signup" component={SignupPage} />
-			  <Route path="admin(/:type)" component={AdminPage} />	      
+			  <Route path="admin(/:type)" component={AdminPage} />
 	    </Route>
   </Router>
 </Provider>
