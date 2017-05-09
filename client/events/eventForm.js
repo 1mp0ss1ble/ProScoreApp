@@ -6,6 +6,7 @@ import util from '../util';
 import {types} from '../app/constants';
 import generateSeasons from './seasonSelection';
 import validateInput from '../../server/shared/validations/checkEvent';
+import renderTable from './resultsTable';
 
 /*
 	<select
@@ -17,100 +18,6 @@ import validateInput from '../../server/shared/validations/checkEvent';
 		 	<option key={t._id} value={t._id}>{t.desc}</option>)}
 	</select>
 */
-function renderTable(obj, allTeams, allMatches){
-
-	let tableArr = [], maxPlayedMatches = 0;
-	const matches = allMatches.filter(m => m.eventId === obj._id);
-	console.log(matches);
-	obj.teams.forEach(id => {
-		const foundedTeam = allTeams.find(t => t._id === id);
-
-		if(foundedTeam){
-			let teamCopy = {_id: id, desc:foundedTeam.desc	}; //team;//Object.assign({},team);
-			teamCopy.points = { win:0, draw:0, loose:0, total:0};
-			teamCopy.matches = [];
-
-			matches.forEach(match => {
-					if(match.homeId === id || match.guestId === id){
-
-						//TODO: update with more relaible condition
-						if(match.result.home !=="" && match.result.guest !== ""){
-							const isHomeTeam = match.homeId === id;
-							const {result} = match;
-
-							const score = isHomeTeam
-								? Number(result.home) - Number(result.guest)
-								: Number(result.guest) - Number(result.home);
-					 	  if(score === 0){ ++teamCopy.points.draw; }
-							if(score > 0){ ++teamCopy.points.win; }
-							if(score < 0){ ++teamCopy.points.loose; }
-						  teamCopy.points.total = teamCopy.points.win*3 + teamCopy.points.draw;
-							teamCopy.matches.push({match,score});
-						}
-					}
-			});
-
-			tableArr.push(teamCopy);
-			maxPlayedMatches = maxPlayedMatches < teamCopy.matches.length
-									? teamCopy.matches.length
-									: maxPlayedMatches;
-
-			console.log(teamCopy);
-		}
-	});
-
-	//order by total points
-	tableArr.sort((a,b)=> {
-		if(a.points.total === b.points.total){
-			return a.desc.toLowerCase().localeCompare(b.desc.toLowerCase());
-		} else{
-			return b.points.total - a.points.total;
-	}});
-
-	return (
-		<div>
-			<h4>Results</h4>
-			<table>
-				<tr>
-					<td>Desc</td>
-					<td>Score</td>
-					{geneateColumns(maxPlayedMatches)}
-					<td>W/D/L</td>
-				</tr>
-				{tableArr.map(t=>
-					<tr key={t._id}>
-						<td>{t.desc}</td>
-						<td>{t.points.total} in {t.matches.length}  </td>
-						{geneateColumns(maxPlayedMatches,t)}
-
-						<td>{t.points.win}/ {t.points.draw}/ {t.points.loose}</td>
-					</tr>)}
-			</table>
-		</div>
-	)}
-
-function geneateColumns(len,team){
-	let ret=[];
-	for(let i=0;i<len;i++)
-	if(team){
-		const currMatch = team.matches[i];
-		let bgColor = "grey";
-		let title ="";
-		if(currMatch){
-			const score = currMatch.score;
-			bgColor = score > 0 ? "green" : score === 0 ? "yellow": "red";
-			console.log(currMatch);
-			title = currMatch.match.result.home + ":"
-			+ currMatch.match.result.guest +" "
-			+ currMatch.match.originHomeDesc + "/ "
-			+ currMatch.match.originGuestDesc;
-		}
-		ret.push(<td title={title} style={{backgroundColor:bgColor}}></td>);
-	}else{
-		ret.push(<td> {i+1} </td>);
-	}
-	return ret;
-}
 
 function ErrorWrapper({children,error}){
 	return (
@@ -478,14 +385,7 @@ class CreateForm extends React.Component {
 						)}
 
 					</div>
-					<h4>Teams:</h4>
-					{this.state.teams &&
-						this.state.teams.map(id =>
-							<p key={id}>
-								{this.props.teams.find(team=>team.id === id).desc}
-							</p>
-						)
-					}
+					
 				</form>
 				<div>
 					{ this.isUpdating && renderTable(this.state, this.props.teams, this.props.matches)}

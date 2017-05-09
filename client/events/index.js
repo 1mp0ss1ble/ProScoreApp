@@ -67,6 +67,7 @@ class EventsContainer extends React.Component {
 					<Events
 				    	editMode={editMode}
 				    	events={events}
+							isUpdating={this.props.editMode}
 							tournaments={tournaments}
 				    	onClick={this.onClickEvent}
 				    />
