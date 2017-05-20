@@ -59,11 +59,13 @@ export default function renderTable(obj, allTeams, allMatches){
 				<tr className="text-bold">
           <td>#</td>
 					<td>Team</td>
-					<td>Score</td>
 					{geneateColumns(maxPlayedMatches)}
-					<td>Win</td>
-          <td>Draw</td>
-          <td>Loose</td>
+					<td>W</td>
+          <td>D</td>
+          <td>L</td>
+					<td>Score</td>
+					<td>Matches</td>
+
 				</tr>
         </thead>
         <tbody>
@@ -71,12 +73,13 @@ export default function renderTable(obj, allTeams, allMatches){
 					<tr key={t._id}>
             <td>{index+1}</td>
 						<td>{t.desc}</td>
-						<td>{t.points.total} in {t.matches.length} matches  </td>
 						{geneateColumns(maxPlayedMatches, t)}
-
 						<td>{t.points.win}</td>
             <td>{t.points.draw}</td>
             <td> {t.points.loose}</td>
+						<td>{t.points.total}</td>
+						<td>{t.matches.length} </td>
+
 					</tr>)}
           </tbody>
 			</table>
