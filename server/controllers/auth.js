@@ -1,27 +1,29 @@
 var express = require('express')
   , router = express.Router()
   , path   = require('path')
-  , db = require('../db/player');
+  , db = require('../db/auth');
 
 
 
 router.get('/get', (req, res) => {
-    //db.getAll((err, models) => res.json({err, models}));
-    db.getAll(req,res);
+  //  db.getAll((err, models) => res.json({err, models}));
+     db.getAll(req, res);
 });
 
 
 router.post('/add', (req,res) => {
-    db.add(req.body, err => res.json({err}));
+    db.add(req, res);
 });
 
 router.post('/update', (req,res) => {
-    db.update(req.body, (err, data) => res.json({err,data}));
+    //db.update(req.body, (err, data) => res.json({err,data}));
+    db.update(req, res);
 });
 
 
 router.post('/remove', (req,res) => {
-    db.remove( req.body.id, err => res.json({err}) );
+    //db.remove( req.body.id, err => res.json({err}) );
+    db.remove(req, res);
 });
 
 /*

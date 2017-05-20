@@ -40,9 +40,15 @@ conn.on('error', console.error.bind(console, 'connection error:'));
 
 
 
-exports.getAll = (cb) =>
-  Model.find(cb);
-
+exports.getAll = (req, res) =>{
+  Model.find((err, data) => {
+    if(err){
+      return res.status(400).json(err);
+    } else {
+      return res.json(data);
+    }
+});
+}
 
 /*
 exports.get = (desc, res) =>
@@ -75,8 +81,17 @@ exports.add = (req, res) => {
 }
 
 
-exports.remove = (id, cb) =>
-  Model.remove({"_id": mongoose.Types.ObjectId(id)}, cb);
+exports.remove = (req, res) =>
+  Model.remove(
+    {"_id": mongoose.Types.ObjectId(req.body.id)},
+    (err,response) => {
+    if(err){
+      return res.status(400).json(err);
+    } else{
+      return res.json(response);
+    }
+  }
+);
 
 
 

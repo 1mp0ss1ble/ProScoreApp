@@ -6,7 +6,7 @@ function getTournament(id, tournaments){
 	return tournaments.find(t => t._id === id);
 }
 
-const Events = ({events, tournaments, onClick}) => {
+const Events = ({events, isUpdating=false, tournaments, onClick}) => {
 	return (
 		<div>
 			<ol>
@@ -14,6 +14,7 @@ const Events = ({events, tournaments, onClick}) => {
 					<li key={t._id} >
 						<Event
 						    onClick={onClick}
+						  isUpdating={isUpdating}
 							event={t}
 							tournament={getTournament(t.tournamentId, tournaments)}
 						/>

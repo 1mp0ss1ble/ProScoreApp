@@ -6,7 +6,8 @@ var express = require('express')
 
 
 router.get('/get', (req, res) => {
-    db.getAll((err, models) => res.json({err, models}));
+  //  db.getAll((err, models) => res.json({err, models}));
+  db.getAll(req, res);
 });
 
 
@@ -21,7 +22,8 @@ router.post('/update', (req,res) => {
 
 
 router.post('/remove', (req,res) => {
-    db.remove( req.body.id, err => res.json({err}) );
+    //db.remove( req.body.id, err => res.json({err})
+   db.remove(req, res);
 });
 
 /*

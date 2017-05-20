@@ -1,5 +1,6 @@
-import validateInput from '../shared/validations/addTeam';
-
+import isEmpty from 'lodash/isEmpty';
+import Validator from 'validator';
+import {isStringsAreEqual} from '../util';
 var
    mongoose = require('mongoose')
   , config   = require('./config').config
@@ -17,18 +18,24 @@ var conn = mongoose.connection;
 var Schema = new mongoose.Schema({
     id : String,
     desc : String,
-    rating : String,
-    sponsor : String,
-    captain : String
+    tournamentId : String,
+    leagueId: String,
+    groupId: String,
+    seasonId: String,
+    createdDate: Date,
+    userId: Number,
+    teams: Array,
+    info: String,
+    isActive: Boolean,
 });
 
-let Model = mongoose.model('teams',Schema);
+let Model = mongoose.model('auth', Schema);
 
 conn.on('error', console.error.bind(console, 'connection error:'));
 
 
 
-exports.getAll = (req, res) =>{
+exports.getAll = (req, res) => {
   Model.find((err, data) => {
     if(err){
       return res.status(400).json(err);
@@ -37,6 +44,7 @@ exports.getAll = (req, res) =>{
     }
 });
 }
+
 /*
 exports.get = (desc, res) =>
   Model.findOne({desc : desc}, cb);
@@ -44,13 +52,64 @@ exports.get = (desc, res) =>
 
 
 
-exports.add = (data, cb) => {
-  if(data.desc.trim().length < 1) {
+exports.add = (req, res) => {
+  /*
+  if(data.guestId.trim().length < 1) {
     return cb('no description!');
   }
-  let model = new Model(data);
+  */
+  let model = new Model(req.body);
   model.id = model._id;
-  model.save(cb)
+  model.desc = model.desc.trim();
+
+  let { errors, isValid } = validateInput(model);
+
+  console.log('errors',errors);
+
+  if(!isValid){
+    return res.status(400).json(errors);
+  }
+
+
+  Model.find((err, items) => {
+    if(err){
+      errors.database = JSON.stringify(err);
+      return res.status(400).json(errors);
+    }else{
+
+     let filtered = items.filter(t =>
+       t.tournamentId === model.tournamentId);
+
+     filtered = model.leagueId ?
+       filtered.filter(t => t.leagueId === model.leagueId) : filtered;
+
+     filtered = model.groupId ?
+       filtered.filter(t => t.groupId === model.groupId) : filtered;
+
+     const duplicate = filtered.find(t =>
+       isStringsAreEqual(t.desc,model.desc));
+
+
+      console.log('duplicate', duplicate);
+
+
+      if(duplicate){
+        errors.desc = "duplicate season";
+        return res.status(400).json(errors);
+      } else {
+        model.save((err, response)=>{
+          if(err){
+            errors.database = JSON.stringify(err);
+            return res.status(400).json(errors);
+          } else {
+            return res.json(response);
+          }
+        });
+      }
+
+    }
+
+  });
 }
 
 
@@ -67,13 +126,33 @@ exports.remove = (req, res) =>
 );
 
 
+function validateInput(data){
+  let errors = {};
 
+  if(Validator.isEmpty(data.desc.trim())){
+    errors.desc = "This field is required";
+  }
+
+
+  if(data.rating && !Validator.isNumeric(data.rating)){
+    errors.rating = "This field is for number only";
+  }
+
+  if(!data._id || !Validator.isMongoId(data._id.toString())){
+    errors._id = "this field is missing or has wrong type";
+  }
+
+  return {
+    errors,
+    isValid: isEmpty(errors),
+  }
+}
 
 exports.update = function(req, res){
 
   let model = req.body;
 
-  console.log(validateInput);
+
   const { errors, isValid } = validateInput(model);
 
   console.log('errors',errors);
@@ -94,14 +173,14 @@ exports.update = function(req, res){
 
 
 
-  Model.find((err, teams) => {
+  Model.find((err, items) => {
 
       if(err){
         errors.database = JSON.stringify(err);
         return res.status(400).json(errors);
       }
 
-      const duplicates = teams
+      const duplicates = items
                             .filter(t =>
                                 t._id.toString() !==
                                 model._id.toString())

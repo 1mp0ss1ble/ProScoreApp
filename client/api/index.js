@@ -17,24 +17,26 @@ const getActions = {
 };
 
 
-const constructRoute = (action) => (type) => 
+const constructRoute = (action) => (type) =>
 	action && type ? `api/${type}/${action}` : null;
- 
+
 
 
 const api = {
-	
-	getItems: (type) => () => (dispatch) => {		
+
+	getItems: (type) => () => (dispatch) => {
 
 		const route = constructRoute('get')(type);
 
 		const {fetchRequest, fetchSuccess} = getActions[`${type}Actions`];
 
 		dispatch(fetchRequest());
-		
+
 		return axios.get(route).then(response =>
-				dispatch(fetchSuccess(response.data.models))
-		)},	
+			dispatch(fetchSuccess(response.data)
+		)).catch(err => {
+			console.log(err.response.data);
+		})},
 
 	addItem: (type) => (data) => (dispatch) => {
 		const route = constructRoute('add')(type);
@@ -43,20 +45,24 @@ const api = {
 
 
 	removeItem: (type) =>  (data) => (dispatch) => {
-		const route = constructRoute('remove')(type);		
+		const route = constructRoute('remove')(type);
 		return axios.post(route, data);
 	},
 
 
 	updateItem: (type) => (data) => (dispatch) => {
 		const route = constructRoute('update')(type);
-		return axios.post(route, data);	
+		return axios.post(route, data);
 
-	}
+	},
+
+	auth : (type) => (data) => (dispatch) => {
+		const route  = constructRoute(type)('auth');
+		console.log(route);
+
+		return axios.post(route, data);
+	},
 
 }
 
 export default api;
-
-
-

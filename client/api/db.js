@@ -7,6 +7,9 @@ const customizedApi = {
 	matches: generateApiMethods(types.match),
 	tournaments:generateApiMethods(types.tournament),
 	events: generateApiMethods(types.event),
+	auth : {
+		signup: api.auth('signup')
+	},
 }
 
 
@@ -20,5 +23,3 @@ function generateApiMethods(type){
 }
 
 export default customizedApi;
-
-

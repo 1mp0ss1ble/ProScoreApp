@@ -5,15 +5,21 @@ import Modal from './modal';
 import api from '../api/db';
 
 class App extends React.Component {
+
 	componentDidMount(){
 		//this.props.dispatch(api.teams.get());
 		//this.props.dispatch(api.tournaments.get());
 		//this.props.dispatch(api.matches.get());
 		//this.props.dispatch(api.events.get());
 		for(let key in api){
-			this.props.dispatch(api[key].get());
+			if(Object.hasOwnProperty.call(api,key) && key !== 'auth'){
+				console.log(key);
+				this.props.dispatch(api[key].get());
+			}
 		}
 	}
+
+
 	render(){
 		return (
 			<div className="content">
@@ -21,15 +27,14 @@ class App extends React.Component {
 				<NavigationBar />
 
 				<div className="container">
-					
-					{this.props.children}
+					 { this.props.children }
 				</div>
 
 				<Modal />
-				
+
 			</div>
 		);
 	}
 };
 
-export default connect()(App);
+export default connect(state=>({loaders:state.loaders}))(App);

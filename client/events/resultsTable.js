@@ -83,8 +83,8 @@ export default function renderTable(obj, allTeams, allMatches){
 		</div>
 	)}
 
-function geneateColumns(len,team){
-	let ret=[],tt=[];
+function geneateColumns(len, team){
+	let ret=[], tt=[];
   //const sortedMatches=[];
   //team.matches.forEach(t => sortedMatches.push(t.match));
   if(team){

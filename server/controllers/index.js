@@ -16,6 +16,7 @@ router.use('/api/match', require('./match'));
 
 router.use('/api/player', require('./player'));
 
+router.use('/api/auth', require('./auth'));
 
 
 

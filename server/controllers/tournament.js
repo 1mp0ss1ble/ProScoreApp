@@ -6,7 +6,8 @@ var express = require('express')
 
 
 router.get('/get', (req, res) => {
-    db.getAll((err, models) => res.json({err, models}));
+    //db.getAll((err, models) => res.json({err, models}));
+    db.getAll(req, res);
 });
 
 
