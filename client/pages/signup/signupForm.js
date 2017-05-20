@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import ErrorWrapper from '../../common/components/ErrorWrapper';
+import ErrorWrapper from '../../common/components/errorWrapper';
 import api from '../../api/db';
 import {types} from '../../app/constants'
 import validateInput from '../../../server/shared/validations/checkSignup';
