@@ -1,7 +1,6 @@
-import React from 'react'
+import React from 'react';
 
 export default function renderTable(obj, allTeams, allMatches){
-
 	let tableArr = [], maxPlayedMatches = 0;
 	const matches = allMatches.filter(m => m.eventId === obj._id);
 	console.log(matches);

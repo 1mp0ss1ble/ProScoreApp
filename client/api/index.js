@@ -35,7 +35,7 @@ const api = {
 		return axios.get(route).then(response =>
 			dispatch(fetchSuccess(response.data)
 		)).catch(err => {
-			console.log(err.response.data);
+			console.log(err);
 		})},
 
 	addItem: (type) => (data) => (dispatch) => {

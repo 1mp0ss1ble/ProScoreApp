@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-export default function({match, teams, event, tournament, onClick}){
+export default function({match, teams, event, tournament, onClick, hideDetails}){
 
 	let home = teams.find(x => x._id === match.homeId),
 		guest = teams.find(x => x._id === match.guestId),
@@ -33,11 +33,16 @@ export default function({match, teams, event, tournament, onClick}){
 
 	return (
 		<span className="link" onClick={onClick.bind(null,match)}>
-			<mark>{homeDesc}</mark>
-			{' '}{resultText }{' '}
-			<mark>{guestDesc}</mark>
-			{' '} <span> {eventArray.join(' | ')}</span> {' '}
-			<mark>{date}</mark>
+					<mark>{homeDesc}</mark>
+					{' '}{resultText }{' '}
+					<mark>{guestDesc}</mark>
+					{!hideDetails &&
+						<span>
+							{' '} <span> {eventArray.join(' | ')}</span>
+						</span>
+					}
+					{' '}{date}
+
 		</span>
 	);
 }

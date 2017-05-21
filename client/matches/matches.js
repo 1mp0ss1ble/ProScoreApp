@@ -9,7 +9,7 @@ function getTeamDesc(teams){
 }
 
 
-const Matches = ({matches, teams, tournaments, events, onClickMatch}) => {
+const Matches = ({matches, teams, tournaments, events, onClickMatch, hideDetails=false}) => {
 	let getDesc = getTeamDesc(teams);
 
 	return (
@@ -20,11 +20,12 @@ const Matches = ({matches, teams, tournaments, events, onClickMatch}) => {
 
 					return (
 						<li key={t._id}>
-							<Match 
-								match={t} 
-								teams={teams} 
-							    tournament={tournaments.find(x => 
-							    	x._id === event.tournamentId)}							
+							<Match
+								match={t}
+								hideDetails = {hideDetails}
+								teams={teams}
+							    tournament={tournaments.find(x =>
+							    	x._id === event.tournamentId)}
 								event={event}
 								onClick={onClickMatch} />
 						</li>
