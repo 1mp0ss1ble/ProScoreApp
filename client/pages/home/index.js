@@ -5,7 +5,7 @@ import Matches from '../../matches';
 import Events from '../../events';
 import EventsList from '../../events/eventsList';
 import resultsTable from '../../events/resultsTable';
-import MatchesList from '../../matches/Matches';
+import MatchesList from '../../matches/matches';
 
 //import {FormControl} from 'react-bootstrap';
 
