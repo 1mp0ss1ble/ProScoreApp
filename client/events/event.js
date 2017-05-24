@@ -6,7 +6,7 @@ import classnames from 'classnames';
 export default function ({event, tournament, onClick}) {
 
 	function getDetails({leagueId, groupId}){
-		let bj = {
+		let obj = {
 			league:{desc:''},
 			group:{desc:''}
 		};
