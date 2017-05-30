@@ -53,9 +53,20 @@ const playersReducer = (state=[], action) => {
 	}
 }
 
+const usersReducer = (state=[], action) => {
+	switch (action.type) {
+		case "FETCH_USERS_SUCCESS":
+			return action.payload || [];
+		default:
+			return state;
+
+	}
+}
+
 
 const loadersReducer = (state={}, action) => {
 	switch(action.type){
+
 		case 'FETCH_TEAMS_REQUEST':
 			return {...state, isFetchingTeams:true};
 		case 'FETCH_TEAMS_SUCCESS':
@@ -65,6 +76,12 @@ const loadersReducer = (state={}, action) => {
 			return {...state, isFetchingPlayers:true};
 		case 'FETCH_PLAYERS_SUCCESS':
 			return {...state, isFetchingPlayers:false};
+
+		case 'FETCH_USERS_REQUEST':
+			return {...state, isFetchingUsers:true};
+		case 'FETCH_USERS_SUCCESS':
+			return {...state, isFetchingUsers:false};
+
 
 		case 'FETCH_EVENTS_REQUEST':
 			return {...state, isFetchingEvents:true};
@@ -97,14 +114,26 @@ const modalReducer = (state={}, action) => {
 	}
 }
 
+
+const authReducer = (state={}, action) => {
+	switch(action.type){
+		case 'SET_CURRENT_USER':
+		return {...state, user: action.payload};
+		default:
+		return state;
+	}
+}
+
 const rootReducer = combineReducers({
 	matches:  matchesReducer,
 	players:  playersReducer,
 	tournaments: tournamentsReducer,
 	events:  eventsReducer,
 	teams:    teamsReducer,
+	users: usersReducer,
 	loaders:  loadersReducer,
 	modal:    modalReducer,
+	auth: authReducer,
 });
 
 

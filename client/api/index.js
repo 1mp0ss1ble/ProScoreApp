@@ -4,16 +4,18 @@ import * as playerActions from '../players/playersActions';
 import * as matchActions from '../matches/matchesActions';
 import * as tournamentActions from '../tournaments/tournamentsActions';
 import * as eventActions from '../events/eventsActions';
+import * as userActions from '../users/usersActions';
 import {types} from '../app/constants';
 
 
 
 const getActions = {
 		teamActions,
-	    eventActions,
+	  eventActions,
 		playerActions,
-	    tournamentActions,
+	  tournamentActions,
 		matchActions,
+		userActions,
 };
 
 
@@ -57,9 +59,8 @@ const api = {
 	},
 
 	auth : (type) => (data) => (dispatch) => {
-		const route  = constructRoute(type)('auth');
+		const route  = constructRoute(type)('user');
 		console.log(route);
-
 		return axios.post(route, data);
 	},
 

@@ -1,5 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { hashHistory } from 'react-router';
+import PropTypes from 'prop-types';
 import ErrorWrapper from '../../common/components/errorWrapper';
 import api from '../../api/db';
 import {types} from '../../app/constants'
@@ -36,18 +38,26 @@ class SignupForm extends React.Component {
 	}
 
 	onSubmit(e) {
+		const {dispatch} = this.props;
 		e.preventDefault();
 
 		if(this.isValid()){
 			this.setState({errors:{},isLoading:true});
 			//console.log(this.state);
 			//return;
-			this.props.dispatch(api.auth.signup(this.state))
+
+			dispatch(api.users.signup(this.state))
 			.then(res => {
-				console.log(res);
+				//const token = res.token;
+				//api.setToken(token);
+				this.setState({isLoading: false})
+				//console.log('cb ', res);
+				dispatch(api.users.get());
+				hashHistory.push('/');
 			}).
 			catch( err => {
-				console.log(err.response.data);
+				this.setState({errors: err.response.data,isLoading: false})
+				//console.log(err.response.data);
 			});
 		}
 	}
@@ -92,5 +102,12 @@ class SignupForm extends React.Component {
 		);
 	}
 }
+
+SignupForm.propTypes = {
+	dispatch : PropTypes.func.isRequired,
+};
+
+SignupForm.defaultProps = {
+};
 
 export default connect()(SignupForm);

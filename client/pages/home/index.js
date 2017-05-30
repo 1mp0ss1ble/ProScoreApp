@@ -6,6 +6,7 @@ import Events from '../../events';
 import EventsList from '../../events/eventsList';
 import resultsTable from '../../events/resultsTable';
 import MatchesList from '../../matches/matches';
+import News from './news';
 
 //import {FormControl} from 'react-bootstrap';
 
@@ -22,7 +23,24 @@ class Home extends React.Component{
 
 		this.showEvent = this.showEvent.bind(this);
 		this.onClickMatch = this.onClickMatch.bind(this);
+		this.renderContent = this.renderContent.bind(this);
+	}
 
+	renderContent(props, eventId){
+		const {events, teams, matches} = props;
+
+		return (
+			<div>
+				{resultsTable(events.find(x=> x._id == eventId), teams, matches)}
+				<h4>Matches</h4>
+				<MatchesList
+					{...this.props}
+					hideDetails
+					matches={matches.filter(x=>x.eventId === eventId)}
+					onClickMatch={this.onClickMatch}
+				/>
+			</div>
+		);
 	}
 
 	onClickMatch(data){
@@ -30,27 +48,19 @@ class Home extends React.Component{
 	}
 
 	showEvent(id){
+		//console.log(id);
 		this.setState({eventId:id});
 	}
 
 	render(){
-		const {events, teams, matches} = this.props;
 		const {eventId} = this.state;
 		return (
 			<div>
 				<EventsList showEvent={this.showEvent} />
 				<p></p>
-				{this.state.eventId &&
-					<div>
-						{resultsTable(events.find(x=> x._id == eventId),teams, matches)}
-					  <h4>Matches</h4>
-						<MatchesList
-							{...this.props}
-							hideDetails={true}
-							matches={matches.filter(x=>x.eventId === eventId)}
-							onClickMatch={this.onClickMatch}
-						/>
-					</div>
+				{this.state.eventId
+					? this.renderContent({...this.props},eventId)
+					: <News />
 				}
 			</div>
 		);

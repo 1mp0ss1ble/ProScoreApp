@@ -14,6 +14,10 @@ router.post('/signup',(req, res) => {
   db.add(req, res);
 });
 
+router.post('/login',(req, res) => {
+  db.login(req, res);
+});
+
 
 router.post('/add', (req,res) => {
     db.add(req, res);

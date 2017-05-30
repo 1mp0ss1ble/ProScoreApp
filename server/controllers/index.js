@@ -18,6 +18,7 @@ router.use('/api/player', require('./player'));
 
 router.use('/api/auth', require('./auth'));
 
+router.use('/api/user', require('./user'));
 
 
 module.exports = router;

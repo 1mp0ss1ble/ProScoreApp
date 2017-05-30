@@ -7,10 +7,18 @@ const customizedApi = {
 	matches: generateApiMethods(types.match),
 	tournaments:generateApiMethods(types.tournament),
 	events: generateApiMethods(types.event),
-	auth : {
-		signup: api.auth('signup')
+	users: {
+		...generateApiMethods(types.user),
+		signup: api.auth('signup'),
+		login: api.auth('login'),
 	},
+	auth : {
+		signup: api.auth('signup'),
+	},
+	//setToken: setToken,
 }
+
+
 
 
 function generateApiMethods(type){
@@ -20,6 +28,11 @@ function generateApiMethods(type){
 		update: api.updateItem(type),
 		remove: api.removeItem(type),
 	};
+}
+
+
+function setToken(token){
+	console.log(token);
 }
 
 export default customizedApi;

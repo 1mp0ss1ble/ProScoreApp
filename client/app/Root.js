@@ -6,8 +6,7 @@ import configureStore from './configureStore';
 import HomePage from '../pages/home';
 import AdminPage from '../pages/admin';
 import SignupPage from '../pages/signup';
-
-
+import LoginPage from '../pages/login';
 
 
 const Signup = () => <div>Signup</div>;
@@ -19,6 +18,7 @@ const Root = () => (
 	     <Route component={App}>
 			  <Route path="/" component={HomePage} />
 			  <Route path="/signup" component={SignupPage} />
+				<Route path="/login" component={LoginPage} />
 			  <Route path="admin(/:type)" component={AdminPage} />
 	    </Route>
   </Router>

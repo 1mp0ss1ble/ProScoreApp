@@ -3,8 +3,16 @@ import { connect } from 'react-redux';
 import NavigationBar from './NavigationBar';
 import Modal from './modal';
 import api from '../api/db';
+import setAuthorizationToken from '../users/setAuthorizationToken';
+import {setCurrentUser} from '../users/usersActions';
+
 
 class App extends React.Component {
+	constructor(props){
+		super(props);
+
+		this.logout = this.logout.bind(this);
+	}
 
 	componentDidMount(){
 		for(let key in api){
@@ -15,12 +23,17 @@ class App extends React.Component {
 		}
 	}
 
+ logout(){
+	 localStorage.removeItem('jwtToken');
+	 setAuthorizationToken(null);
+	 this.props.dispatch(setCurrentUser({}));
+ }
 
 	render(){
 		return (
 			<div className="content">
 
-				<NavigationBar />
+				<NavigationBar user={this.props.user} logout={this.logout} />
 
 				<div className="container">
 					 { this.props.children }
@@ -32,4 +45,4 @@ class App extends React.Component {
 };
 
 export default connect(state =>
-	({loaders:state.loaders}))(App);
+	({loaders:state.loaders, user: state.auth}))(App);

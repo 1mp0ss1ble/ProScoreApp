@@ -4,7 +4,7 @@ var node_dir = path.resolve(__dirname, 'node_modules');
 
 module.exports = {
     entry: './client/index.js',
-	
+
     output: {
         path: path.join(__dirname, 'public'),
         filename: 'bundle.js',
@@ -18,7 +18,7 @@ module.exports = {
             path.join(__dirname, 'client'),
             path.join(__dirname, 'server/shared'),
           ],
-          loaders: ['babel']	
+          loaders: ['babel']
         },
         {
 	      test: /\.css$/, // Only .css files
@@ -26,7 +26,7 @@ module.exports = {
 	    }
       ]
     },
-  
+
     plugins: [
      	new webpack.DefinePlugin({
 	"process.env": {

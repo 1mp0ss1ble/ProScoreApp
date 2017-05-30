@@ -1,4 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import Validator from 'validator';
 import {isStringsAreEqual} from '../util';
 import validateInput from '../shared/validations/checkSignup';
@@ -9,7 +11,8 @@ var
   , table    = {};
 
 var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
-                replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };
+                replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } },
+};
 
 var mongodbUri = 'mongodb://writer:Qwerty11@ds161295.mlab.com:61295/soccer';
 
@@ -19,24 +22,22 @@ var conn = mongoose.connection;
 var Schema = new mongoose.Schema({
     id : String,
     username: String,
-    pwd: String,
+    password: String,
     createdDate: Date,
 });
 
-let Model = mongoose.model('auth', Schema);
+let Model = mongoose.model('users', Schema);
 
 conn.on('error', console.error.bind(console, 'connection error:'));
 
 
 
 exports.getAll = (req, res) => {
-  Model.find((err, data) => {
-    if(err){
-      return res.status(400).json(err);
-    } else {
-      return res.json(data);
-    }
-});
+  Model.find({}).then(data =>
+    res.json(data)
+  ).catch(err =>
+    res.status(400).json(data)
+  );
 }
 
 /*
@@ -44,30 +45,45 @@ exports.get = (desc, res) =>
   Model.findOne({desc : desc}, cb);
 */
 
+exports.login = (req, res) => {
+  const { username, password } = req.body;
 
+  Model.find().then(users => {
+    var user = users.find( u => isStringsAreEqual(u.username, username));
+    if(user){
+      if(bcrypt.compareSync(password, user.password)){
+        const token = jwt.sign({_id: user._id, username: user.username}, "jwt-secret");
+        return res.json({token});
+      } else {
+        return res.status(400).json({form: "Invalid credentials!"});
+      }
+    } else{
+        return res.status(400).json({form: "Invalid credentials!"});
+    }
+  }).catch( err => res.status(400).json({err}));
+}
 
 exports.add = (req, res) => {
 
-  const model = req.body;
-
+  let model = new Model(req.body);
   let { errors, isValid } = validateInput(model);
 
   if(!isValid){
     return res.status(400).json(errors);
   }
 
-  Model.find((err, items) => {
+  Model.find().then(items => {
     const filtered = items.filter( item => isStringsAreEqual(item.username, model.username));
-
     if(!filtered.length){
-      Model.save(model, (err, response) => {
-        return res.json(response);
-      });
-    } else{
+      model.password = bcrypt.hashSync(model.password, 10);
+      model.save(model)
+      .then(response => res.json(response))
+      .catch(err => res.status(400).json(err));
+    } else {
       errors.username = "such username already exists!";
       return res.status(400).json(errors);
     }
-  });
+  }).catch(err => res.status(400).json(err));
 }
 
 
@@ -83,54 +99,16 @@ exports.remove = (req, res) =>
   }
 );
 
-/*
-function validateInput(data){
-  let errors = {};
-
-  if(Validator.isEmpty(data.desc.trim())){
-    errors.desc = "This field is required";
-  }
-
-
-  if(data.rating && !Validator.isNumeric(data.rating)){
-    errors.rating = "This field is for number only";
-  }
-
-  if(!data._id || !Validator.isMongoId(data._id.toString())){
-    errors._id = "this field is missing or has wrong type";
-  }
-
-  return {
-    errors,
-    isValid: isEmpty(errors),
-  }
-}
-*/
 
 exports.update = function(req, res){
 
   let model = req.body;
-
-
   const { errors, isValid } = validateInput(model);
-
   console.log('errors',errors);
 
   if(!isValid){
     return res.status(400).json(errors);
   }
-
-  /*
-  if(model.desc.trim().length < 1){
-     res.status(400).json('Description is empty!');
-  }
-
-  if(isNaN(model.rating)){
-      res.status(400).('Rating must be number!');
-  }
-  */
-
-
 
   Model.find((err, items) => {
 
