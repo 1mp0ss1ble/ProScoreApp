@@ -17,7 +17,6 @@ class App extends React.Component {
 	componentDidMount(){
 		for(let key in api){
 			if(Object.hasOwnProperty.call(api,key) && key !== 'auth'){
-				console.log(key);
 				this.props.dispatch(api[key].get());
 			}
 		}
@@ -33,7 +32,7 @@ class App extends React.Component {
 		return (
 			<div className="content">
 
-				<NavigationBar user={this.props.user} logout={this.logout} />
+				<NavigationBar user={this.props.auth.user} logout={this.logout} />
 
 				<div className="container">
 					 { this.props.children }
@@ -45,4 +44,4 @@ class App extends React.Component {
 };
 
 export default connect(state =>
-	({loaders:state.loaders, user: state.auth}))(App);
+	({loaders:state.loaders, auth: state.auth}))(App);

@@ -11,9 +11,8 @@ import isEmpty from 'lodash/isEmpty';
 
 class NavigationBar extends React.Component{
 	render(){
-		const {user} = this.props.user;
-		console.log('user',user);
-
+		const {user} = this.props;
+		
 		const guestLinks = (
 			<ul className="nav navbar-nav navbar-left">
 

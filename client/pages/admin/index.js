@@ -6,7 +6,7 @@ import Matches from '../../matches';
 import Events from '../../events';
 import Tournaments from '../../tournaments';
 import Players from '../../players/players';
-
+import Users from '../../users/users';
 
 const EditItem = ({type}) => {
 	switch(type){
@@ -20,6 +20,8 @@ const EditItem = ({type}) => {
 			return <Events editMode />;
 		case 'tournaments':
 			return <Tournaments editMode />;
+		case 'users':
+			return <Users editMode />;
 		default:
 			return <div>Empty for {type} </div>;
 

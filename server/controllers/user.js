@@ -1,3 +1,4 @@
+import authenticate from '../middlewares/authenticate';
 var express = require('express')
   , router = express.Router()
   , path   = require('path')
@@ -5,8 +6,9 @@ var express = require('express')
 
 
 
-router.get('/get', (req, res) => {
+router.get('/get', authenticate, (req, res) => {
   //  db.getAll((err, models) => res.json({err, models}));
+    console.log('curr User', req.currentUser);
      db.getAll(req, res);
 });
 

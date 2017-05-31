@@ -31,6 +31,8 @@ let Model = mongoose.model('users', Schema);
 conn.on('error', console.error.bind(console, 'connection error:'));
 
 
+exports.get = (criteria, cb) => Model.find(criteria, cb);
+
 
 exports.getAll = (req, res) => {
   Model.find({}).then(data =>

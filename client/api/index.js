@@ -60,7 +60,6 @@ const api = {
 
 	auth : (type) => (data) => (dispatch) => {
 		const route  = constructRoute(type)('user');
-		console.log(route);
 		return axios.post(route, data);
 	},
 
