@@ -32,13 +32,26 @@ class Home extends React.Component{
 		return (
 			<div>
 				{resultsTable(events.find(x=> x._id == eventId), teams, matches)}
-				<h4>Matches</h4>
+				<hr/>
+				<h3>Matches</h3>
+				<h4>Upcoming</h4>
 				<MatchesTable
 					{...this.props}
 					hideDetails
+					played={false}
 					matches={matches.filter(x=>x.eventId === eventId)}
 					onClickMatch={this.onClickMatch}
 				/>
+				<h4>Played</h4>
+
+				<MatchesTable
+					{...this.props}
+					hideDetails
+					played
+					matches={matches.filter(x=>x.eventId === eventId)}
+					onClickMatch={this.onClickMatch}
+				/>
+
 			</div>
 		);
 	}

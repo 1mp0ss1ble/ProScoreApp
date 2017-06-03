@@ -8,9 +8,13 @@ function getTeamDesc(teams){
 	}
 }
 
-
-const Matches = ({matches, teams, tournaments, events, onClickMatch, hideDetails=false}) => {
+const Matches = ({matches, teams, played, tournaments, events, onClickMatch, hideDetails=false}) => {
 	let getDesc = getTeamDesc(teams);
+	let filtered = matches.filter( x =>
+		played
+		? (x.result.home && x.result.guest)
+		: !x.result.home || !x.result.guest
+	);
 
 	return (
 		<div>
@@ -25,7 +29,7 @@ const Matches = ({matches, teams, tournaments, events, onClickMatch, hideDetails
 					</tr>
 				</thead>
 				<tbody>
-					{matches.slice().reverse().map((t,index) => {
+					{filtered.slice().reverse().map((t,index) => {
 						const event = events.find(x => x._id === t.eventId);
 						return (
 						  <Match
