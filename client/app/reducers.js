@@ -1,104 +1,51 @@
 import { combineReducers } from 'redux';
+import { pluralNamesArray } from './constants';
 
 
-const tournamentsReducer = (state=[], action) => {
-
+const modelsReducer = (type) => (state = [], action) => {
 	switch(action.type){
-		case 'FETCH_TOURNAMENTS_SUCCESS':
+		case `FETCH_${type}_SUCCESS`:
 			return action.payload;
 		default:
 			return state;
-	}
+   }
 }
 
-const eventsReducer = (state=[], action) => {
-
-	switch(action.type){
-		case 'FETCH_EVENTS_SUCCESS':
-			return action.payload;
-		default:
-			return state;
-	}
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
 
-const teamsReducer = (state=[], action) => {
+const loadersReducer = (state = {}, action) => {
 
-	switch(action.type){
-		case 'FETCH_TEAMS_SUCCESS':
-			return action.payload;
-		default:
-			return state;
+ const names = action.type.split('_');
+ const pattern = /^FETCH_[A-Z]+_FAIL|SUCCESS|REQUEST$/i;
+
+ if(!pattern.test(action.type)) {
+ 	return state;
+ }
+
+ const pluralName = names[1].toLowerCase();
+
+ if(pluralName && pluralNamesArray().indexOf(pluralName) !== -1){
+		const propName = "isFetching" + capitalizeFirstLetter(pluralName);
+
+		switch(action.type){
+			case `FETCH_${pluralName}_REQUEST`:
+				return {...state, [propName]: true};
+			case `FETCH_${pluralName}_SUCCESS`:
+				return {...state, [propName]: false};
+			case `FETCH_${pluralName}_FAIL`:
+				return {...state, [propName]: false};
+			default:
+				return state;
+		}
+	} else{
+		return state;
 	}
 }
 
-const matchesReducer = (state=[], action) => {
-
-	switch(action.type){
-		case 'FETCH_MATCHES_SUCCESS':
-			return action.payload;
-		default:
-			return state;
-	}
-}
-
-
-
-const playersReducer = (state=[], action) => {
-	switch(action.type){
-		case 'FETCH_PLAYERS_SUCCESS':
-			return action.payload;
-		default:
-			return state;
-	}
-}
-
-const usersReducer = (state=[], action) => {
-	switch (action.type) {
-		case "FETCH_USERS_SUCCESS":
-			return action.payload || [];
-		default:
-			return state;
-
-	}
-}
-
-
-const loadersReducer = (state={}, action) => {
-	switch(action.type){
-
-		case 'FETCH_TEAMS_REQUEST':
-			return {...state, isFetchingTeams:true};
-		case 'FETCH_TEAMS_SUCCESS':
-			return {...state, isFetchingTeams:false};
-
-		case 'FETCH_PLAYERS_REQUEST':
-			return {...state, isFetchingPlayers:true};
-		case 'FETCH_PLAYERS_SUCCESS':
-			return {...state, isFetchingPlayers:false};
-
-		case 'FETCH_USERS_REQUEST':
-			return {...state, isFetchingUsers:true};
-		case 'FETCH_USERS_SUCCESS':
-			return {...state, isFetchingUsers:false};
-
-
-		case 'FETCH_EVENTS_REQUEST':
-			return {...state, isFetchingEvents:true};
-		case 'FETCH_EVENTS_SUCCESS':
-			return {...state, isFetchingEvents:false};
-
-		case 'FETCH_TOURNAMENTS_REQUEST':
-			return {...state, isFetchingTournaments:true};
-		case 'FETCH_TOURNAMENTS_SUCCESS':
-			return {...state, isFetchingTournaments:false};
-
-		default:
-		    return state;
-	}
-}
-
-const modalReducer = (state={}, action) => {
+const modalReducer = (state = {}, action) => {
 	switch(action.type){
 		case 'CLOSE_MODAL':
 			return {};
@@ -110,10 +57,8 @@ const modalReducer = (state={}, action) => {
 				    };
 		default:
 			return state;
-
 	}
 }
-
 
 const authReducer = (state={}, action) => {
 	switch(action.type){
@@ -125,12 +70,12 @@ const authReducer = (state={}, action) => {
 }
 
 const rootReducer = combineReducers({
-	matches:  matchesReducer,
-	players:  playersReducer,
-	tournaments: tournamentsReducer,
-	events:  eventsReducer,
-	teams:    teamsReducer,
-	users: usersReducer,
+	matches:  modelsReducer('MATCHES'),
+	players:   modelsReducer('PLAYERS'),
+	tournaments:  modelsReducer('TOURNAMENTS'),
+	events:   modelsReducer('EVENTS'),
+	teams:     modelsReducer('TEAMS'),
+	users:  modelsReducer('USERS'),
 	loaders:  loadersReducer,
 	modal:    modalReducer,
 	auth: authReducer,

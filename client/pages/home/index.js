@@ -5,8 +5,8 @@ import Matches from '../../matches';
 import Events from '../../events';
 import EventsList from '../../events/eventsList';
 import resultsTable from '../../events/resultsTable';
-import MatchesList from '../../matches/matches';
-import News from './news';
+import MatchesTable from '../../matches/MatchesTable';
+import News from './News';
 
 //import {FormControl} from 'react-bootstrap';
 
@@ -33,7 +33,7 @@ class Home extends React.Component{
 			<div>
 				{resultsTable(events.find(x=> x._id == eventId), teams, matches)}
 				<h4>Matches</h4>
-				<MatchesList
+				<MatchesTable
 					{...this.props}
 					hideDetails
 					matches={matches.filter(x=>x.eventId === eventId)}
