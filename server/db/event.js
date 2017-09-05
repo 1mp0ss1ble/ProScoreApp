@@ -1,45 +1,46 @@
 import isEmpty from 'lodash/isEmpty';
 import Validator from 'validator';
 import {isStringsAreEqual} from '../util';
-var 
+var
    mongoose = require('mongoose')
   , config   = require('./config').config
   , teamBase = "postgres://dvzapeelqheaqu:oO5BK3-4tSrIJ-enryi2DbcR8Z@ec2-54-235-108-156.compute-1.amazonaws.com:5432/du0j3d9rj857q"
   , table    = {};
 
-var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }, 
-                replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };       
- 
+var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
+                replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };
+
 var mongodbUri = 'mongodb://writer:Qwerty11@ds161295.mlab.com:61295/soccer';
- 
+
 mongoose.connect(mongodbUri, options);
-var conn = mongoose.connection; 
+var conn = mongoose.connection;
 
 var Schema = new mongoose.Schema({
     id : String,
     desc : String,
     tournamentId : String,
     leagueId: String,
-    groupId: String,  
-    seasonId: String,  
+    groupId: String,
+    seasonId: String,
     createdDate: Date,
     userId: Number,
+    teams: Array,
     info: String,
     isActive: Boolean,
 });
 
 let Model = mongoose.model('events',Schema);
 
-conn.on('error', console.error.bind(console, 'connection error:')); 
+conn.on('error', console.error.bind(console, 'connection error:'));
 
 
 
-exports.getAll = (cb) => 
+exports.getAll = (cb) =>
   Model.find(cb);
 
 
 /*
-exports.get = (desc, res) =>  
+exports.get = (desc, res) =>
   Model.findOne({desc : desc}, cb);
 */
 
@@ -63,28 +64,28 @@ exports.add = (req, res) => {
     return res.status(400).json(errors);
   }
 
-  
+
   Model.find((err, items) => {
     if(err){
       errors.database = JSON.stringify(err);
       return res.status(400).json(errors);
     }else{
 
-     let filtered = items.filter(t => 
+     let filtered = items.filter(t =>
        t.tournamentId === model.tournamentId);
 
-     filtered = model.leagueId ? 
+     filtered = model.leagueId ?
        filtered.filter(t => t.leagueId === model.leagueId) : filtered;
 
-     filtered = model.groupId ? 
+     filtered = model.groupId ?
        filtered.filter(t => t.groupId === model.groupId) : filtered;
-     
-     const duplicate = filtered.find(t => 
+
+     const duplicate = filtered.find(t =>
        isStringsAreEqual(t.desc,model.desc));
 
-      
+
       console.log('duplicate', duplicate);
-    
+
 
       if(duplicate){
         errors.desc = "duplicate season";
@@ -106,8 +107,8 @@ exports.add = (req, res) => {
 }
 
 
-exports.remove = (id, cb) => 
-  Model.remove({"_id": mongoose.Types.ObjectId(id)}, cb);    
+exports.remove = (id, cb) =>
+  Model.remove({"_id": mongoose.Types.ObjectId(id)}, cb);
 
 
 function validateInput(data){
@@ -117,7 +118,7 @@ function validateInput(data){
     errors.desc = "This field is required";
   }
 
-  
+
   if(data.rating && !Validator.isNumeric(data.rating)){
     errors.rating = "This field is for number only";
   }
@@ -133,10 +134,10 @@ function validateInput(data){
 }
 
 exports.update = function(req, res){
-    
+
   let model = req.body;
- 
- 
+
+
   const { errors, isValid } = validateInput(model);
 
   console.log('errors',errors);
@@ -158,18 +159,18 @@ exports.update = function(req, res){
 
 
   Model.find((err, items) => {
-      
+
       if(err){
         errors.database = JSON.stringify(err);
         return res.status(400).json(errors);
       }
 
       const duplicates = items
-                            .filter(t => 
-                                t._id.toString() !== 
+                            .filter(t =>
+                                t._id.toString() !==
                                 model._id.toString())
-                            .filter(t => 
-                                t.desc.toLowerCase() === 
+                            .filter(t =>
+                                t.desc.toLowerCase() ===
                                 model.desc.toLowerCase());
 
       if(duplicates.length > 0){
@@ -181,14 +182,10 @@ exports.update = function(req, res){
             errors.database = JSON.stringify(err);
             return res.status(400).json(errors);
           } else{
-             return res.json(obj); 
+             return res.json(obj);
           }
         });
       }
-    
+
   });
 }
-
-
-
-

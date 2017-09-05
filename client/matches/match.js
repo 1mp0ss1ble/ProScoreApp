@@ -2,7 +2,7 @@ import React from 'react';
 
 
 export default function({match, teams, event, tournament, onClick}){
-	
+
 	let home = teams.find(x => x._id === match.homeId),
 		guest = teams.find(x => x._id === match.guestId),
 		result = match.result || ' ?-? ',
@@ -14,24 +14,30 @@ export default function({match, teams, event, tournament, onClick}){
 
 			if(event.groupId){
 				const group = league.groups.find(x => x._id === event.groupId);
-				//eventArray.push(group.desc);
+				eventArray.push(group.desc);
+			}
+
+			if(event.desc){
+				eventArray.push(event.desc);
 			}
 		}
 
-		
+
 
 		//eventArray.push(event.desc);
 
-		const resultText = result && result.home && result.guest ? 
+		const resultText = result && result.home && result.guest ?
 			result.home + " : " + result.guest : " ? : ? "
+	  const homeDesc = home ? home.desc : match.originHomeDesc ? match.originHomeDesc : "removed";
+		const guestDesc = guest ? guest.desc : match.originGuestDesc ? match.originGuestDesc : "removed";
 
 	return (
 		<span className="link" onClick={onClick.bind(null,match)}>
-			<mark>{home.desc}</mark> 
+			<mark>{homeDesc}</mark>
 			{' '}{resultText }{' '}
-			<mark>{guest.desc}</mark> 
+			<mark>{guestDesc}</mark>
 			{' '} <span> {eventArray.join(' | ')}</span> {' '}
-			<mark>{date}</mark> 
+			<mark>{date}</mark>
 		</span>
 	);
 }

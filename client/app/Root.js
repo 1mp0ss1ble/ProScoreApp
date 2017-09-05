@@ -3,9 +3,9 @@ import { Provider } from 'react-redux';
 import { Router, Route, IndexRoute, hashHistory }  from 'react-router';
 import App from './App';
 import configureStore from './configureStore';
-import HomePage from '../homePage';
+import HomePage from '../pages/home';
 import AdminPage from '../pages/admin';
-import SignupPage from '../signupPage/signupPage';
+import SignupPage from '../pages/signup';
 
 
 

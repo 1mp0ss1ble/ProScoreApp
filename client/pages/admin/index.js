@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import Teams from '../teams';
-import Matches from '../matches';
-import Events from '../events';
-import Tournaments from '../tournaments';
-import Players from '../players/players';
+import Teams from '../../teams';
+import Matches from '../../matches';
+import Events from '../../events';
+import Tournaments from '../../tournaments';
+import Players from '../../players/players';
 
 
 const EditItem = ({type}) => {
@@ -16,7 +16,7 @@ const EditItem = ({type}) => {
 			return <Players  editMode />;
 		case 'matches':
 			return <Matches editMode />;
-		case 'events':	
+		case 'events':
 			return <Events editMode />;
 		case 'tournaments':
 			return <Tournaments editMode />;
@@ -38,16 +38,16 @@ function generateLinks(){
 				{' '}
 			</span>
 			);
-	});	
+	});
 }
 
 
-const Admin = ({params}) => 
+const Admin = ({params}) =>
 	<div>
 		<p>Edit: {' '}
 
 		{generateLinks()}
-	
+
 		</p>
 		<div className="well">
 			<EditItem type={params.type} />

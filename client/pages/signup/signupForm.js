@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import api from '../api';
-import {types} from '../app/constants'
+import api from '../../api';
+import {types} from '../../app/constants'
 
 
 class SignupForm extends React.Component {
@@ -27,7 +27,7 @@ class SignupForm extends React.Component {
 			if(obj[key].length < 1){
 				this.setState({[key]: ''});
 				return false;
-			}	
+			}
 		}
 
 		this.props.dispatch(api.addItem(types.player,this.state))
@@ -41,29 +41,29 @@ class SignupForm extends React.Component {
 			<form onSubmit={this.onSubmit}>
 				<h2>Join us!</h2>
 				<div className="input-group">
-				<span className="input-group-addon modal-addon"  
+				<span className="input-group-addon modal-addon"
 				id="basic-addon1">username</span>
-  			
-				<input 
+
+				<input
 					value={this.state.username}
 					onChange={this.onChange}
-					name="username" 
+					name="username"
 					required
 					type="text"
 					className="form-control"
 				/>
 				</div>
-				<div className="input-group">	
-				<span className="input-group-addon modal-addon"  
+				<div className="input-group">
+				<span className="input-group-addon modal-addon"
 				id="basic-addon2">password</span>
-  			
-				<input 
+
+				<input
 					value={this.state.password}
 					onChange={this.onChange}
 					name="password"
 					type="password"
-					required 
-					className="form-control" 
+					required
+					className="form-control"
 				/>
 				</div>
 				<p></p>
@@ -78,4 +78,3 @@ class SignupForm extends React.Component {
 }
 
 export default connect()(SignupForm);
-

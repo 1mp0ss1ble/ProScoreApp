@@ -25,7 +25,7 @@ function FormSelect({desc,handleChange, models}){
 	return (
 		<select name={desc} onChange={handleChange} className="form-group">
 			<option  value="">{`select ${desc.slice(0,-2)}...`}</option>
-			{models.map(t => 
+			{models.map(t =>
 				<option key={t._id} value={t._id}>{t.desc}</option>
 			)}
 		</select>
@@ -40,7 +40,7 @@ class CreateForm extends React.Component {
 			eventId:null,
 			homeId:null,
 			guestId:null,
-			date: null, 
+			date: null,
 			errors:{}
 		};
 		this.handDateleChange = this.handDateleChange.bind(this);
@@ -60,14 +60,16 @@ class CreateForm extends React.Component {
 			homeId: this.state.homeId,
 			guestId: this.state.guestId,
 			eventId: this.state.eventId,
+			originHomeDesc: this.props.teams.find(t => t._id === homeId).desc,
+			originGuestDesc: this.props.teams.find(t => t._id === guestId).desc,
 			date: moment(this.state.date).format("DD/MM/YYYY"),
 			location: this.refs.location.value,
 		}
 	}
 
 	isValid(){
-     	
-     	const obj = this.getInputData();
+
+    const obj = this.getInputData();
 	 	const {errors, isValid} = validateInput(obj);
 
      	if(!isValid){
@@ -81,8 +83,9 @@ class CreateForm extends React.Component {
 		e.preventDefault();
 		const { dispatch } = this.props;
 		this.setState({errors:{}, isLoading: true})
-		
-		if(true){
+
+		if(this.isValid()){
+			console.log(this.getInputData());
 			dispatch(api.matches.add(this.getInputData()))
 			.then( () => {
 				this.setState({isLoading: false});
@@ -94,13 +97,13 @@ class CreateForm extends React.Component {
 		}
 	}
 
-	
+
 	generateHours(){
 		let hours = [];
 
 		for(let i=0;i<24;i++){
 			hours.push(<option></option>);
-		}	
+		}
 	}
 
 	generateMinutes(){
@@ -120,27 +123,27 @@ class CreateForm extends React.Component {
 			    {errors.database && <span>{errors.database}</span>}
 
 			    <ErrorWrapper error={errors.eventId}>
-			    	<FormSelect 
-			    		desc="eventId" 
-			    		handleChange={this.handleSelectChange} 
-			    		models={this.props.events} 
+			    	<FormSelect
+			    		desc="eventId"
+			    		handleChange={this.handleSelectChange}
+			    		models={this.props.events}
 			    	/>
 				</ErrorWrapper>
-				
-				
+
+
 				<ErrorWrapper error={errors.homeId}>
-				  	<FormSelect 
+				  	<FormSelect
 				  		desc="homeId"
-				  		handleChange={this.handleSelectChange}  
-				  		models={this.props.teams} 
+				  		handleChange={this.handleSelectChange}
+				  		models={this.props.teams}
 				  	/>
 				</ErrorWrapper>
 
 				<ErrorWrapper error={errors.guestId}>
-					<FormSelect 
-						desc="guestId" 
-						handleChange={this.handleSelectChange} 
-						models={this.props.teams} 
+					<FormSelect
+						desc="guestId"
+						handleChange={this.handleSelectChange}
+						models={this.props.teams}
 					/>
 				</ErrorWrapper>
 
@@ -153,18 +156,18 @@ class CreateForm extends React.Component {
 						onChange={this.handDateleChange}
 					/>
 				</ErrorWrapper>
-					<input 
-						type='text' 
-						ref="location" 
-						placeholder="location" 
+					<input
+						type='text'
+						ref="location"
+						placeholder="location"
 					/>
-				
-				<input 
-					type='submit' 
-					className="btn btn-primary" 
-					value='create' 
+
+				<input
+					type='submit'
+					className="btn btn-primary"
+					value='create'
 				/>
-				
+
 			</div>
 		</form>
 		);

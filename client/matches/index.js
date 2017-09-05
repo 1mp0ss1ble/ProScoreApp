@@ -23,7 +23,7 @@ class MatchesContainer extends React.Component {
 	onClickMatch(match){
 		this.props.dispatch({
 			type: 'OPEN_MODAL',
-			modalType: 'match', 
+			modalType: 'match',
 			payload: match,
 		});
 	}
@@ -31,7 +31,7 @@ class MatchesContainer extends React.Component {
 	onClickAdd(){
 		this.props.dispatch({
 			type: 'OPEN_MODAL',
-			modalType: 'match', 
+			modalType: 'match',
 			payload: null,
 		});
 	}
@@ -39,7 +39,7 @@ class MatchesContainer extends React.Component {
 	render(){
 		const {matches, ...rest} = this.props;
 
-		if(this.props.loaders.isFetchingEvents 
+		if(this.props.loaders.isFetchingEvents
 			|| this.props.loaders.isFetchingTeams
 			|| this.props.loaders.isFetchingTournaments) {
 			return <span>loading...</span>;
@@ -48,9 +48,9 @@ class MatchesContainer extends React.Component {
 		return (
 				<div>
 					<p>
-					{this.props.editMode && 
-						<button 
-							className="btn btn-primary" 
+					{this.props.editMode &&
+						<button
+							className="btn btn-primary"
 							onClick={this.onClickAdd}>
 								Add...
 						</button>}
@@ -64,16 +64,14 @@ class MatchesContainer extends React.Component {
 
 export default connect(
 	state => ({
-		matches:    state.matches,
+		matches: state.matches,
 		tournaments: state.tournaments,
-		teams:      state.teams,
+		teams: state.teams,
 		events: state.events,
 		loaders: state.loaders,
-	}), 
+	}),
 	//{
 		//fetchTeamsSuccess,
 		//fetchTeamsRequest,
 	//}
 )(MatchesContainer);
-
-

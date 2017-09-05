@@ -25,7 +25,7 @@ class EventsContainer extends React.Component {
 	onClickEvent(event){
 		this.props.dispatch({
 			type: 'OPEN_MODAL',
-			modalType: 'event', 
+			modalType: 'event',
 			payload: event,
 		});
 	}
@@ -33,15 +33,15 @@ class EventsContainer extends React.Component {
 	onClickAdd(){
 		this.props.dispatch({
 			type: 'OPEN_MODAL',
-			modalType: 'event', 
+			modalType: 'event',
 			payload: null,
 		});
 	}
 
 	render(){
-		let {events, tournaments} = this.props;
+		let {events, tournaments, teams} = this.props;
 		const {isFetchingEvents, isFetchingTournaments, editMode} = this.props;
-		
+
 		if((isFetchingEvents && !events.length) ||
 			(isFetchingTournaments && !tournaments.length)) {
 				return <span>loading...</span>;
@@ -49,7 +49,7 @@ class EventsContainer extends React.Component {
 
 		if(!tournaments.length){
 				return <span>please create event first</span>;
-		}	
+		}
 
 		if(this.props.showOnlyActive){
 			events = events.filter(t => t.isActive == true);
@@ -57,18 +57,18 @@ class EventsContainer extends React.Component {
 
 		return (
 				<div>
-					{this.props.editMode && 
-						<button 
-							className="btn btn-primary" 
+					{this.props.editMode &&
+						<button
+							className="btn btn-primary"
 							onClick={this.onClickAdd}>
 								Add...
 						</button>}
 
-					<Events 
+					<Events
 				    	editMode={editMode}
-				    	events={events} 
-				    	tournaments={tournaments} 
-				    	onClick={this.onClickEvent} 
+				    	events={events}
+							tournaments={tournaments}
+				    	onClick={this.onClickEvent}
 				    />
 				</div>
 			);
@@ -82,11 +82,9 @@ export default connect(
 		tournaments: state.tournaments,
 		isFetchingTournaments: state.loaders.isFetchingTournaments,
 		isFetchingEvents: state.loaders.isFetchingEvents,
-	}), 
+	}),
 	//{
 		//fetchTeamsSuccess,
 		//fetchTeamsRequest,
 	//}
 )(EventsContainer);
-
-

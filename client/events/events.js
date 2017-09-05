@@ -10,15 +10,15 @@ const Events = ({events, tournaments, onClick}) => {
 	return (
 		<div>
 			<ol>
-				{events.map(t => 
+				{events.map(t =>
 					<li key={t._id} >
-						<Event 
+						<Event
 						    onClick={onClick}
-							event={t} 
-							tournament={getTournament(t.tournamentId, tournaments)} 
+							event={t}
+							tournament={getTournament(t.tournamentId, tournaments)}
 						/>
 					</li>
-				)}		
+				)}
 			</ol>
 		</div>
 	);
